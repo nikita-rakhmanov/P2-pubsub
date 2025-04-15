@@ -2,21 +2,22 @@ package src.pubsub.examples;
 
 import src.pubsub.core.BasicConsumer;
 import src.pubsub.core.BasicEvent;
+import src.pubsub.core.BasicMiddleware;
 import src.pubsub.core.BasicPublisher;
 import src.pubsub.core.Consumer;
 import src.pubsub.core.Publisher;
-import src.pubsub.qos.fault.RecoverableMiddleware;
 
 /**
  * Test class to demonstrate the queue crash recovery functionality.
  * Tests R5: Crashing queues.
+ * Refactored to use BasicXXX implementation.
  */
 public class QueueCrashTest {
     public static void main(String[] args) throws InterruptedException {
         System.out.println("Starting Queue Crash Recovery Test...");
         
-        // Create recoverable middleware
-        RecoverableMiddleware middleware = new RecoverableMiddleware();
+        // Create middleware
+        BasicMiddleware middleware = new BasicMiddleware();
         
         // Create channels
         middleware.createChannel("critical-data");

@@ -2,31 +2,31 @@ package src.pubsub.examples;
 
 import src.pubsub.core.BasicConsumer;
 import src.pubsub.core.BasicEvent;
+import src.pubsub.core.BasicMiddleware;
 import src.pubsub.core.BasicPublisher;
-import src.pubsub.core.Consumer;
 import src.pubsub.core.Event;
 import src.pubsub.core.Publisher;
-import src.pubsub.qos.network.DelayAwareQueue;
-import src.pubsub.qos.network.DelayTolerantMiddleware;
+import src.pubsub.core.Consumer;
 
 /**
  * Test class to demonstrate handling network delays.
  * Tests R7: Long delays in network traffic.
+ * Refactored to use BasicXXX implementation.
  */
 public class NetworkDelayTest {
     public static void main(String[] args) throws InterruptedException {
         System.out.println("Starting Network Delay Test...");
         
-        // Create delay-tolerant middleware with custom settings
-        DelayTolerantMiddleware middleware = new DelayTolerantMiddleware(
+        // Create middleware with custom settings
+        BasicMiddleware middleware = new BasicMiddleware(
                 5000,   // 5 second timeout
                 3,      // 3 retries
                 30);    // 30 second purge interval
         
         // Create channels with different delay characteristics
-        middleware.createChannel("fast-channel", 2000, 2);   // Short timeout, few retries
-        middleware.createChannel("medium-channel", 5000, 3); // Medium timeout
-        middleware.createChannel("slow-channel", 15000, 5);  // Long timeout, many retries
+        middleware.createChannel("fast-channel", 2000, 2, 30);   // Short timeout, few retries
+        middleware.createChannel("medium-channel", 5000, 3, 30); // Medium timeout
+        middleware.createChannel("slow-channel", 15000, 5, 30);  // Long timeout, many retries
         
         // Create publishers and consumers
         Publisher publisher = new BasicPublisher("MainPublisher");
@@ -132,8 +132,8 @@ public class NetworkDelayTest {
      * @param middleware the middleware
      * @param channelName the channel name
      */
-    private static void printChannelMetrics(DelayTolerantMiddleware middleware, String channelName) {
-        DelayAwareQueue.DeliveryMetrics metrics = middleware.getChannelMetrics(channelName);
+    private static void printChannelMetrics(BasicMiddleware middleware, String channelName) {
+        BasicMiddleware.DeliveryStats metrics = middleware.getDeliveryStats().get(channelName);
         if (metrics != null) {
             System.out.println(channelName + " metrics: " + metrics);
         } else {

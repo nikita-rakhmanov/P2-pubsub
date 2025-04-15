@@ -5,6 +5,9 @@ import src.pubsub.core.*;
 import java.util.*;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.Executors;
+import java.io.FilterOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
 
 /**
  * Terminal-based application for testing and demonstrating the pub-sub system.
@@ -22,10 +25,14 @@ public class PubSubTerminalTest {
     // Scanner for user input
     private Scanner scanner;
     
+    // Add to PubSubTerminalTest.java
+    private boolean quietMode = false;
+    
     public PubSubTerminalTest() {
         middleware = new BasicMiddleware(30000, 3, 30);
         scanner = new Scanner(System.in);
         scheduler = Executors.newScheduledThreadPool(1);
+        configureLogging(); // Initialize logging configuration
     }
     
     /**
@@ -62,6 +69,9 @@ public class PubSubTerminalTest {
                     middleware.dispatchAllEvents();
                     System.out.println("All events dispatched");
                     break;
+                case "7":
+                    toggleQuietMode();
+                    break;
                 case "0":
                     running = false;
                     break;
@@ -82,8 +92,54 @@ public class PubSubTerminalTest {
         System.out.println("4. Run QoS Tests");
         System.out.println("5. Show Statistics");
         System.out.println("6. Dispatch All Events");
+        System.out.println("7. Toggle Quiet Mode (" + (quietMode ? "enabled" : "disabled") + ")");
         System.out.println("0. Exit");
-        System.out.print("Enter your choice: ");
+        System.out.println("Enter your choice: "); //println fixes the issue with the quite mode filtering
+    }
+    
+    // Add this method to enable/disable quiet mode
+    private void toggleQuietMode() {
+        quietMode = !quietMode;
+        System.out.println("Quiet mode " + (quietMode ? "enabled" : "disabled"));
+        
+        // Configure loggers based on quiet mode
+        configureLogging();
+    }
+
+    // Method to configure logging behavior
+    private void configureLogging() {
+        // Redirect System.out if in quiet mode
+        if (quietMode) {
+            // Store original System.out
+            final PrintStream originalOut = System.out;
+            
+            // Create filtered print stream that only allows certain messages
+            PrintStream filteredOut = new PrintStream(new FilterOutputStream(originalOut) {
+                @Override
+                public void write(byte[] b, int off, int len) throws IOException {
+                    String message = new String(b, off, len);
+                    // Only print messages that start with these prefixes or don't contain "backed up"
+                    // Also allow "Enter your choice: " messages
+                    if (message.startsWith("===") || 
+                        message.startsWith("-") || 
+                        message.startsWith(">") || 
+                        message.contains("Enter your choice:") ||
+                        !message.contains("backed up")) {
+                        super.write(b, off, len);
+                    }
+                }
+                
+                @Override
+                public void write(int b) throws IOException {
+                    super.write(b);
+                }
+            });
+            
+            System.setOut(filteredOut);
+        } else {
+            // Reset to standard System.out (if we stored the original)
+            System.setOut(System.out);
+        }
     }
     
     private void manageChannels() {

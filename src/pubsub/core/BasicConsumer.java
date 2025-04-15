@@ -10,7 +10,7 @@ import src.pubsub.qos.fault.ConnectionManager;
 import src.pubsub.qos.fault.ConsumerHealthMonitor;
 
 /**
- * Enhanced implementation of the Consumer interface that includes QoS features.
+ * Implementation of the Consumer interface that includes QoS features.
  * Combines features from BasicConsumer, StatefulConsumer, ReconnectingConsumer, and ReliableConsumer.
  */
 public class BasicConsumer implements Consumer, Serializable {

@@ -2,23 +2,23 @@ package src.pubsub.examples;
 
 import src.pubsub.core.BasicConsumer;
 import src.pubsub.core.BasicEvent;
+import src.pubsub.core.BasicMiddleware;
 import src.pubsub.core.BasicPublisher;
 import src.pubsub.core.Channel;
 import src.pubsub.core.Publisher;
 import src.pubsub.qos.fault.ConsumerHealthMonitor;
-import src.pubsub.qos.fault.RecoverableMiddleware;
-import src.pubsub.qos.fault.StatefulConsumer;
 
 /**
  * Test class to demonstrate the consumer crash recovery functionality.
  * Tests R6: Crashing consumers.
+ * Refactored to use BasicXXX implementation.
  */
 public class ConsumerCrashTest {
     public static void main(String[] args) throws InterruptedException {
         System.out.println("Starting Consumer Crash Test...");
         
         // Create middleware
-        RecoverableMiddleware middleware = new RecoverableMiddleware();
+        BasicMiddleware middleware = new BasicMiddleware();
         
         // Create channels
         middleware.createChannel("important-updates");
@@ -28,13 +28,9 @@ public class ConsumerCrashTest {
         Publisher publisher = new BasicPublisher("MainPublisher");
         publisher.registerWithMiddleware(middleware);
         
-        // Create consumers
-        BasicConsumer basicConsumer1 = new BasicConsumer("InternalConsumer1");
-        BasicConsumer basicConsumer2 = new BasicConsumer("InternalConsumer2");
-        
-        // Wrap with stateful consumers for crash recovery
-        StatefulConsumer consumer1 = new StatefulConsumer(basicConsumer1, "StatefulConsumer1");
-        StatefulConsumer consumer2 = new StatefulConsumer(basicConsumer2, "StatefulConsumer2");
+        // Create consumers with crash recovery capabilities
+        BasicConsumer consumer1 = new BasicConsumer("Consumer1");
+        BasicConsumer consumer2 = new BasicConsumer("Consumer2");
         
         // Register consumers with middleware
         consumer1.registerWithMiddleware(middleware);
@@ -70,7 +66,7 @@ public class ConsumerCrashTest {
         System.out.println("\n--- Waiting for health monitor to detect crash ---");
         for (int i = 0; i < 10; i++) {
             ConsumerHealthMonitor.ConsumerStatus status = 
-                    ConsumerHealthMonitor.getInstance().getConsumerStatus("StatefulConsumer1");
+                    ConsumerHealthMonitor.getInstance().getConsumerStatus("Consumer1");
             System.out.println("Consumer status: " + status);
             
             if (status == ConsumerHealthMonitor.ConsumerStatus.CONFIRMED_DEAD) {
@@ -119,6 +115,7 @@ public class ConsumerCrashTest {
         System.out.println("\nCleaning up...");
         consumer1.shutdown();
         consumer2.shutdown();
+        middleware.shutdown();
         ConsumerHealthMonitor.getInstance().shutdown();
         
         System.out.println("Consumer Crash Test Complete!");

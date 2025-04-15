@@ -2,27 +2,27 @@ package src.pubsub.examples;
 
 import src.pubsub.core.BasicConsumer;
 import src.pubsub.core.BasicEvent;
+import src.pubsub.core.BasicMiddleware;
 import src.pubsub.core.BasicPublisher;
 import src.pubsub.core.Event;
 import src.pubsub.core.Publisher;
-import src.pubsub.qos.reliability.ReliableConsumer;
-import src.pubsub.qos.reliability.ReliableMiddleware;
 
 import java.util.Map;
 
 /**
  * Test class to demonstrate handling message loss.
  * Tests R8: Dropped messages.
+ * Refactored to use BasicXXX implementation.
  */
 public class MessageLossTest {
     public static void main(String[] args) throws InterruptedException {
         System.out.println("Starting Message Loss Test...");
         
         // Create middleware with quick timeouts for testing
-        ReliableMiddleware middleware = new ReliableMiddleware(
+        BasicMiddleware middleware = new BasicMiddleware(
                 10000,  // 10 second message TTL
-                2000,   // 2 second resend interval
-                5);     // 5 max delivery attempts
+                5,      // 5 max delivery attempts
+                2000);  // 2 second purge interval
         
         // Create channels with different reliability characteristics
         middleware.createChannel("reliable-channel");
@@ -33,13 +33,10 @@ public class MessageLossTest {
         Publisher publisher = new BasicPublisher("TestPublisher");
         publisher.registerWithMiddleware(middleware);
         
-        // Create reliable consumers
-        ReliableConsumer consumer1 = new ReliableConsumer(
-                new BasicConsumer("UnderlyingConsumer1"), "ReliableConsumer1");
-        ReliableConsumer consumer2 = new ReliableConsumer(
-                new BasicConsumer("UnderlyingConsumer2"), "ReliableConsumer2");
-        ReliableConsumer consumer3 = new ReliableConsumer(
-                new BasicConsumer("UnderlyingConsumer3"), "ReliableConsumer3");
+        // Create consumers
+        BasicConsumer consumer1 = new BasicConsumer("ReliableConsumer");
+        BasicConsumer consumer2 = new BasicConsumer("LossyConsumer");
+        BasicConsumer consumer3 = new BasicConsumer("VeryLossyConsumer");
         
         // Register consumers with middleware
         consumer1.registerWithMiddleware(middleware);
@@ -55,9 +52,9 @@ public class MessageLossTest {
         System.out.println("\n--- Configuring message loss ---");
         
         // Channel-based loss
-        middleware.simulateChannelMessageLoss("reliable-channel", false, 0.0);
-        middleware.simulateChannelMessageLoss("lossy-channel", true, 0.3);
-        middleware.simulateChannelMessageLoss("very-lossy-channel", true, 0.7);
+        middleware.setChannelDeliveryFailureProbability("reliable-channel", 0.0);
+        middleware.setChannelDeliveryFailureProbability("lossy-channel", 0.3);
+        middleware.setChannelDeliveryFailureProbability("very-lossy-channel", 0.7);
         
         // Consumer-based loss (additional loss)
         consumer1.simulateMessageLoss(false, 0.0);
@@ -101,7 +98,7 @@ public class MessageLossTest {
         System.out.println("\n--- Phase 2: High message loss scenario ---");
         
         // Increase loss rates
-        middleware.simulateChannelMessageLoss("very-lossy-channel", true, 0.9);
+        middleware.setChannelDeliveryFailureProbability("very-lossy-channel", 0.9);
         consumer3.simulateMessageLoss(true, 0.5);
         
         System.out.println("very-lossy-channel now has 90% channel loss + 50% consumer loss");
@@ -136,10 +133,10 @@ public class MessageLossTest {
      * 
      * @param middleware the middleware
      */
-    private static void printDeliveryStats(ReliableMiddleware middleware) {
-        Map<String, ReliableMiddleware.DeliveryStats> stats = middleware.getDeliveryStats();
+    private static void printDeliveryStats(BasicMiddleware middleware) {
+        Map<String, BasicMiddleware.DeliveryStats> stats = middleware.getDeliveryStats();
         
-        for (Map.Entry<String, ReliableMiddleware.DeliveryStats> entry : stats.entrySet()) {
+        for (Map.Entry<String, BasicMiddleware.DeliveryStats> entry : stats.entrySet()) {
             System.out.println(entry.getKey() + ": " + entry.getValue());
         }
     }
