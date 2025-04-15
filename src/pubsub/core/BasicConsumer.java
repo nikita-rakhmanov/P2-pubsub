@@ -70,18 +70,18 @@ public class BasicConsumer implements Consumer, Serializable {
     }
     
     @Override
-    public void consume(Event event) {
+    public boolean consume(Event event) {
         checkCrashed();
         
         if (!connectionManager.isConnected(id)) {
             System.err.println("Consumer " + id + " is disconnected, cannot consume event");
-            return;
+            return false;
         }
         
         // Simulate message loss if enabled
         if (simulateMessageLoss && Math.random() < messageLossProbability) {
             System.out.println("Consumer " + id + " simulating message loss for " + event.getType());
-            return;
+            return false;
         }
         
         try {
@@ -93,11 +93,14 @@ public class BasicConsumer implements Consumer, Serializable {
             if (event instanceof BasicEvent) {
                 BasicEvent enhancedEvent = (BasicEvent) event;
                 enhancedEvent.acknowledgeConsumer(id);
+                return true;
             }
         } catch (Exception e) {
             System.err.println("Error consuming event: " + e.getMessage());
             connectionManager.simulateDisconnection(id);
+            return false;
         }
+        return true; // Event consumed successfully
     }
     
     @Override

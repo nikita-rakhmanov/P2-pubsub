@@ -9,7 +9,7 @@ public interface Consumer {
      * 
      * @param event the event to consume
      */
-    void consume(Event event);
+    boolean consume(Event event);
     
     /**
      * Subscribes the consumer to a channel.

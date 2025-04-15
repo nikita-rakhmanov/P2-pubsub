@@ -3,7 +3,6 @@ package src.pubsub.qos.fault;
 import src.pubsub.core.DynamicQueue;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.Executors;
@@ -21,7 +20,7 @@ public class PersistentQueue<T extends Serializable> {
     private final String queueId;
     private DynamicQueue<T> queue;
     private final QueueBackupManager backupManager;
-    private final ScheduledExecutorService scheduler;
+    private ScheduledExecutorService scheduler;
     private final int backupIntervalSeconds;
     private final AtomicBoolean crashed = new AtomicBoolean(false);
     private final AtomicBoolean recovering = new AtomicBoolean(false);
@@ -162,36 +161,53 @@ public class PersistentQueue<T extends Serializable> {
      */
     public boolean recover() {
         if (!crashed.get()) {
-            return true; // Not crashed, nothing to recover
+            return true;
         }
-        
+    
         recovering.set(true);
+        scheduler.shutdownNow(); // Shutdown old scheduler before creating new one
         try {
+             // Wait a tiny bit for shutdown
+             try {
+                  scheduler.awaitTermination(100, TimeUnit.MILLISECONDS);
+             } catch (InterruptedException e) {
+                  Thread.currentThread().interrupt();
+             }
+    
             System.out.println("Recovering queue " + queueId + "...");
-            
-            // Create a new queue
-            queue = new DynamicQueue<>(10);
-            
-            // Recover items from backup
-            List<T> recoveredItems = backupManager.recoverQueue(queueId);
-            
-            // Add recovered items to the new queue
-            for (T item : recoveredItems) {
-                queue.add(item);
+            this.queue = new DynamicQueue<>(10); // Assuming DynamicQueue constructor is safe
+    
+            List<T> recoveredItems = backupManager.recoverQueue(queueId); // Verify this manager works
+    
+            if (recoveredItems != null) {
+                 // Use the thread-safe add method
+                 for (T item : recoveredItems) {
+                     queue.add(item);
+                 }
+                 System.out.println("Queue " + queueId + " recovered with " + recoveredItems.size() + " items");
+            } else {
+                 System.err.println("Queue " + queueId + " recovery failed: BackupManager returned null.");
+                 // Decide how to handle this - maybe stay crashed
+                 recovering.set(false); // Still need to unset recovering flag
+                 return false;
             }
-            
-            System.out.println("Queue " + queueId + " recovered with " + recoveredItems.size() + " items");
+    
+    
             crashed.set(false);
-            
-            // Restart backup task
-            startBackupTask();
-            
+    
+            // Create and start a new scheduler for the recovered queue
+            this.scheduler = Executors.newScheduledThreadPool(1);
+            startBackupTask(); // Uses the new scheduler instance
+    
             return true;
         } catch (Exception e) {
             System.err.println("Failed to recover queue " + queueId + ": " + e.getMessage());
+            // Ensure queue is null or unusable if recovery truly fails
+            this.queue = null; // Mark as unusable
+            crashed.set(true); // Remain crashed
             return false;
         } finally {
-            recovering.set(false);
+            recovering.set(false); // Always ensure this is unset
         }
     }
     
@@ -224,29 +240,21 @@ public class PersistentQueue<T extends Serializable> {
      * Backs up the queue to disk.
      */
     private void backupQueue() {
-        if (queue == null) {
+        if (queue == null || crashed.get() || recovering.get()) { 
             return;
         }
-        
-        // Extract all items from the queue
-        List<T> items = new ArrayList<>();
-        DynamicQueue<T> tempQueue = new DynamicQueue<>(queue.size());
-        
-        while (!queue.isEmpty()) {
-            T item = queue.poll();
-            items.add(item);
-            tempQueue.add(item);
-        }
-        
-        // Restore items to the queue
-        while (!tempQueue.isEmpty()) {
-            queue.add(tempQueue.poll());
-        }
-        
-        // Backup items to disk
-        boolean success = backupManager.backupQueue(queueId, items);
-        if (success && items.size() > 0) {
-            System.out.println("Queue " + queueId + " backed up with " + items.size() + " items");
+    
+        // Get a thread-safe snapshot from the modified DynamicQueue
+        List<T> itemsToBackup = queue.getSnapshot(); // This is now thread-safe
+    
+        if (itemsToBackup != null && !itemsToBackup.isEmpty()) {
+            boolean success = backupManager.backupQueue(queueId, itemsToBackup);
+            if (success) {
+                // logging:
+                // System.out.println("Queue " + queueId + " backed up with " + itemsToBackup.size() + " items");
+            } else {
+                System.err.println("Queue " + queueId + " backup failed!");
+            }
         }
     }
     

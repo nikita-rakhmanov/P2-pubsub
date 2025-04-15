@@ -24,8 +24,9 @@ public class PerformanceTest {
         final int[] messageCount = {0};
         Consumer consumer = new Consumer() {
             @Override
-            public void consume(Event event) {
+            public boolean consume(Event event) {
                 messageCount[0]++;
+                return true; // Indicate successful consumption
             }
             
             @Override
