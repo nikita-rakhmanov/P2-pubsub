@@ -1,0 +1,43 @@
+You are expected to have read and understood all the information in this specification and any accompanying documents at least a week before the deadline. You must contact the lecturer regarding any queries well in advance of the deadline.
+
+Aim / Learning objectives
+
+To gain hands-on experience of developing a simple pub-sub system.
+
+·       Understand how to structure messages and message queues
+
+·       Understand basic interfaces of operating around events in a pub-sub system
+
+·       Understand QoS and appreciate the challenges of guaranteeing strong QoS
+
+Requirement
+You will need to build a publish-and-subscribe message-passing system that can scale up to 1000 messages per second. The message’s payload is not important, which can be nothing, for example. Extend the system to address different issues that cause problems, including but not limited to, temporary interruptions of connection; crashing queues; crashing consumers; increasing populations of producers and consumers; long delays in network traffic; dropped messages; out-of-order messages; duplicated messages; and so forth.
+The key to the practical is to *demonstrate* that your solution works. For this you'll need to be able to "inject" the sorts of faults you want to guard against, and measure the ways in which your system deals with them. So for example you might want to be able to set things up so that you can kill a message queue and check that all messages still get through.
+You can use any base middleware you like: Java RMI, SOAP, XML RPC, or any modern choices, something with a binding into your favorite language. As long as you don't choose one that is basically a pub-sub system itself, it's fine. Or you can write the simple message middleware yourself without the networking part.
+
+The main, compulsory, part of the practical should cover the following functionalities:
+
+·       R1. Subscribing and publishing events;
+
+·       R2. Lookup, discovery, and access of event channels;
+
+·       R3. Dynamic message queue management.
+
+The following issues need to be considered:
+
+o   R4. Temporary interruptions of connections;
+
+o   R5. Crashing queues;
+
+o   R6. Crashing customers;
+
+o   R7. Long delays in network traffic;
+
+o   R8. Dropped messages;
+
+o   R9. Out of order messages;
+
+o   R10. Duplicated messages;
+
+o   And so on.
+

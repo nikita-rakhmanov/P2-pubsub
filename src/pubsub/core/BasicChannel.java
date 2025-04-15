@@ -1,18 +1,12 @@
 package src.pubsub.core;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
-
 import src.pubsub.qos.fault.PersistentQueue;
 import src.pubsub.qos.network.NetworkSimulator;
 import src.pubsub.qos.network.TimestampedMessage;

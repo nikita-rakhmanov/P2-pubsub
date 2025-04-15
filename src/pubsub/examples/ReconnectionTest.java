@@ -4,7 +4,6 @@ import src.pubsub.core.*;
 import src.pubsub.qos.fault.ReconnectingConsumer;
 import src.pubsub.qos.fault.ReconnectingPublisher;
 
-import java.util.concurrent.TimeUnit;
 
 /**
  * Test class to demonstrate the reconnection functionality.

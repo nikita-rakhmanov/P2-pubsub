@@ -4,7 +4,6 @@ import src.pubsub.core.BasicConsumer;
 import src.pubsub.core.BasicEvent;
 import src.pubsub.core.BasicPublisher;
 import src.pubsub.core.Channel;
-import src.pubsub.core.Event;
 import src.pubsub.core.Publisher;
 import src.pubsub.qos.fault.ConsumerHealthMonitor;
 import src.pubsub.qos.fault.RecoverableMiddleware;
