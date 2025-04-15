@@ -1,0 +1,421 @@
+NETWORK Delay Test RESULTS
+--------------------------------
+
+Starting Network Delay Test...
+Queue backups will be stored in: /var/folders/5x/3z0k7rh948j0zl95tgvfb9gc0000gn/T//pubsub-backups
+Publisher MainPublisher registered with middleware
+Consumer FastConsumer registered with middleware
+Consumer MediumConsumer registered with middleware
+Consumer SlowConsumer registered with middleware
+Consumer FastConsumer subscribed to channel fast-channel
+Consumer MediumConsumer subscribed to channel medium-channel
+Consumer SlowConsumer subscribed to channel slow-channel
+
+--- Configuring network conditions ---
+Fast channel: 100ms fixed delay
+Medium channel: 500-2000ms variable delay
+Slow channel: 3000±1000ms jittery delay with 30% failure rate
+
+--- Phase 1: Initial publishing ---
+Publisher MainPublisher published event Message 0 to channel fast-channel
+Publisher MainPublisher published event Message 0 to channel medium-channel
+Publisher MainPublisher published event Message 0 to channel slow-channel
+Publisher MainPublisher published event Message 1 to channel fast-channel
+Publisher MainPublisher published event Message 1 to channel medium-channel
+Publisher MainPublisher published event Message 1 to channel slow-channel
+Publisher MainPublisher published event Message 2 to channel fast-channel
+Publisher MainPublisher published event Message 2 to channel medium-channel
+Publisher MainPublisher published event Message 2 to channel slow-channel
+Publisher MainPublisher published event Message 3 to channel fast-channel
+Publisher MainPublisher published event Message 3 to channel medium-channel
+Publisher MainPublisher published event Message 3 to channel slow-channel
+Publisher MainPublisher published event Message 4 to channel fast-channel
+Publisher MainPublisher published event Message 4 to channel medium-channel
+Publisher MainPublisher published event Message 4 to channel slow-channel
+
+Dispatching events...
+Waiting for delayed message delivery...
+Consumer FastConsumer received event: Message 1 at 1744738416410
+Consumer FastConsumer received event: Message 3 at 1744738416410
+Consumer FastConsumer received event: Message 0 at 1744738416373
+Consumer FastConsumer received event: Message 2 at 1744738416410
+Consumer FastConsumer received event: Message 4 at 1744738416410
+Consumer MediumConsumer received event: Message 2 at 1744738416410
+Consumer MediumConsumer received event: Message 1 at 1744738416410
+Consumer MediumConsumer received event: Message 0 at 1744738416373
+Consumer MediumConsumer received event: Message 3 at 1744738416410
+Consumer MediumConsumer received event: Message 4 at 1744738416410
+fast-channel metrics: Sent: 5, Acked: 0, Resent: 5, Failed: 0, Pending: 5, Success: NaN%
+medium-channel metrics: Sent: 5, Acked: 0, Resent: 5, Failed: 0, Pending: 5, Success: NaN%
+
+--- Phase 2: Heavy publishing with network congestion ---
+Publisher MainPublisher published event Burst Message 0 to channel fast-channel
+Publisher MainPublisher published event Burst Message 0 to channel medium-channel
+Publisher MainPublisher published event Burst Message 0 to channel slow-channel
+Publisher MainPublisher published event Burst Message 1 to channel fast-channel
+Publisher MainPublisher published event Burst Message 1 to channel medium-channel
+Publisher MainPublisher published event Burst Message 1 to channel slow-channel
+Publisher MainPublisher published event Burst Message 2 to channel fast-channel
+Publisher MainPublisher published event Burst Message 2 to channel medium-channel
+Publisher MainPublisher published event Burst Message 2 to channel slow-channel
+Publisher MainPublisher published event Burst Message 3 to channel fast-channel
+Publisher MainPublisher published event Burst Message 3 to channel medium-channel
+Publisher MainPublisher published event Burst Message 3 to channel slow-channel
+Publisher MainPublisher published event Burst Message 4 to channel fast-channel
+Publisher MainPublisher published event Burst Message 4 to channel medium-channel
+Publisher MainPublisher published event Burst Message 4 to channel slow-channel
+Publisher MainPublisher published event Burst Message 5 to channel fast-channel
+Publisher MainPublisher published event Burst Message 5 to channel medium-channel
+Publisher MainPublisher published event Burst Message 5 to channel slow-channel
+Publisher MainPublisher published event Burst Message 6 to channel fast-channel
+Publisher MainPublisher published event Burst Message 6 to channel medium-channel
+Publisher MainPublisher published event Burst Message 6 to channel slow-channel
+Publisher MainPublisher published event Burst Message 7 to channel fast-channel
+Publisher MainPublisher published event Burst Message 7 to channel medium-channel
+Publisher MainPublisher published event Burst Message 7 to channel slow-channel
+Publisher MainPublisher published event Burst Message 8 to channel fast-channel
+Publisher MainPublisher published event Burst Message 8 to channel medium-channel
+Publisher MainPublisher published event Burst Message 8 to channel slow-channel
+Publisher MainPublisher published event Burst Message 9 to channel fast-channel
+Publisher MainPublisher published event Burst Message 9 to channel medium-channel
+Publisher MainPublisher published event Burst Message 9 to channel slow-channel
+Publisher MainPublisher published event Burst Message 10 to channel fast-channel
+Publisher MainPublisher published event Burst Message 10 to channel medium-channel
+Publisher MainPublisher published event Burst Message 10 to channel slow-channel
+Publisher MainPublisher published event Burst Message 11 to channel fast-channel
+Publisher MainPublisher published event Burst Message 11 to channel medium-channel
+Publisher MainPublisher published event Burst Message 11 to channel slow-channel
+Publisher MainPublisher published event Burst Message 12 to channel fast-channel
+Publisher MainPublisher published event Burst Message 12 to channel medium-channel
+Publisher MainPublisher published event Burst Message 12 to channel slow-channel
+Publisher MainPublisher published event Burst Message 13 to channel fast-channel
+Publisher MainPublisher published event Burst Message 13 to channel medium-channel
+Publisher MainPublisher published event Burst Message 13 to channel slow-channel
+Publisher MainPublisher published event Burst Message 14 to channel fast-channel
+Publisher MainPublisher published event Burst Message 14 to channel medium-channel
+Publisher MainPublisher published event Burst Message 14 to channel slow-channel
+Publisher MainPublisher published event Burst Message 15 to channel fast-channel
+Publisher MainPublisher published event Burst Message 15 to channel medium-channel
+Publisher MainPublisher published event Burst Message 15 to channel slow-channel
+Publisher MainPublisher published event Burst Message 16 to channel fast-channel
+Publisher MainPublisher published event Burst Message 16 to channel medium-channel
+Publisher MainPublisher published event Burst Message 16 to channel slow-channel
+Publisher MainPublisher published event Burst Message 17 to channel fast-channel
+Publisher MainPublisher published event Burst Message 17 to channel medium-channel
+Publisher MainPublisher published event Burst Message 17 to channel slow-channel
+Publisher MainPublisher published event Burst Message 18 to channel fast-channel
+Publisher MainPublisher published event Burst Message 18 to channel medium-channel
+Publisher MainPublisher published event Burst Message 18 to channel slow-channel
+Publisher MainPublisher published event Burst Message 19 to channel fast-channel
+Publisher MainPublisher published event Burst Message 19 to channel medium-channel
+Publisher MainPublisher published event Burst Message 19 to channel slow-channel
+
+Dispatching burst events...
+Event delivery failed after 4 retries: BasicEvent{id='25ec7770-c3d7-4b06-acf3-95439a6ba2c7', type='Message 0', timestamp=1744738416373, status=FAILED, age=3040ms, acks=2/3, retries=4}
+Event delivery failed after 4 retries: BasicEvent{id='3548501f-c800-4a52-bde3-f61ec38bbb95', type='Message 1', timestamp=1744738416410, status=FAILED, age=3052ms, acks=2/3, retries=4}
+Event delivery failed after 4 retries: BasicEvent{id='33d67012-4da5-4198-a6b6-cbbd7b60641b', type='Message 2', timestamp=1744738416410, status=FAILED, age=3052ms, acks=2/3, retries=4}
+Event delivery failed after 4 retries: BasicEvent{id='0c187606-a95e-44f2-85ab-f9f83de51d31', type='Message 3', timestamp=1744738416410, status=FAILED, age=3052ms, acks=2/3, retries=4}
+Event delivery failed after 4 retries: BasicEvent{id='2d713e20-d041-4e00-8bbe-6f132b162a68', type='Message 4', timestamp=1744738416410, status=FAILED, age=3052ms, acks=2/3, retries=4}
+Event delivery failed after 6 retries: BasicEvent{id='25ec7770-c3d7-4b06-acf3-95439a6ba2c7', type='Message 0', timestamp=1744738416373, status=FAILED, age=3060ms, acks=2/3, retries=6}
+Event delivery failed after 6 retries: BasicEvent{id='3548501f-c800-4a52-bde3-f61ec38bbb95', type='Message 1', timestamp=1744738416410, status=FAILED, age=3054ms, acks=2/3, retries=6}
+Event delivery failed after 6 retries: BasicEvent{id='33d67012-4da5-4198-a6b6-cbbd7b60641b', type='Message 2', timestamp=1744738416410, status=FAILED, age=3054ms, acks=2/3, retries=6}
+Event delivery failed after 6 retries: BasicEvent{id='0c187606-a95e-44f2-85ab-f9f83de51d31', type='Message 3', timestamp=1744738416410, status=FAILED, age=3054ms, acks=2/3, retries=6}
+Event delivery failed after 6 retries: BasicEvent{id='2d713e20-d041-4e00-8bbe-6f132b162a68', type='Message 4', timestamp=1744738416410, status=FAILED, age=3055ms, acks=2/3, retries=6}
+Waiting for delayed burst message delivery...
+Consumer FastConsumer received event: Burst Message 3 at 1744738419441
+Consumer FastConsumer received event: Burst Message 2 at 1744738419441
+Consumer FastConsumer received event: Burst Message 0 at 1744738419440
+Consumer FastConsumer received event: Burst Message 1 at 1744738419441
+Consumer SlowConsumer received event: Message 3 at 1744738416410
+Consumer SlowConsumer received event: Message 0 at 1744738416373
+Consumer SlowConsumer received event: Message 1 at 1744738416410
+Consumer FastConsumer received event: Burst Message 4 at 1744738419441
+Consumer FastConsumer received event: Burst Message 5 at 1744738419441
+Consumer FastConsumer received event: Burst Message 7 at 1744738419442
+Consumer FastConsumer received event: Burst Message 6 at 1744738419441
+Consumer MediumConsumer received event: Burst Message 3 at 1744738419441
+Consumer MediumConsumer received event: Burst Message 1 at 1744738419441
+Consumer FastConsumer received event: Burst Message 9 at 1744738419442
+Consumer FastConsumer received event: Burst Message 8 at 1744738419442
+Consumer FastConsumer received event: Burst Message 10 at 1744738419442
+Consumer FastConsumer received event: Burst Message 11 at 1744738419442
+Consumer MediumConsumer received event: Burst Message 0 at 1744738419440
+Queue channel-slow-channel backed up with 25 items
+Queue channel-fast-channel backed up with 20 items
+Queue channel-medium-channel backed up with 20 items
+Message expired during network delay: TimestampedMessage{messageId='b2b77e75-bd66-4766-9d6c-8e9d27c3502a', event=BasicEvent{id='547f01ba-74d1-46cb-a6ed-a848fd2b68cc', type='Burst Message 14', timestamp=1744738419443, status=DISPATCHED, age=2033ms, acks=0/3, retries=3}, channelName='fast-channel', status=DISPATCHED, age=2013ms, retryCount=0}
+Message expired during network delay: TimestampedMessage{messageId='0f542b68-b518-4594-b16c-2e920505316e', event=BasicEvent{id='7d42de67-b6d5-4bf4-ad08-26e2281cf699', type='Burst Message 12', timestamp=1744738419442, status=DISPATCHED, age=2034ms, acks=0/3, retries=3}, channelName='fast-channel', status=DISPATCHED, age=2013ms, retryCount=0}
+Message expired during network delay: TimestampedMessage{messageId='1a3960a9-99cb-4c8f-8b68-3fff0e10b940', event=BasicEvent{id='b5cc466a-eb1c-4b30-8a96-5c1364e1ead5', type='Burst Message 13', timestamp=1744738419443, status=DISPATCHED, age=2033ms, acks=0/3, retries=3}, channelName='fast-channel', status=DISPATCHED, age=2013ms, retryCount=0}
+Message expired during network delay: TimestampedMessage{messageId='793682a6-57e4-467c-84da-e4ec7d28d13d', event=BasicEvent{id='47019db1-f3ce-4582-a9f8-779e1c2ff280', type='Burst Message 15', timestamp=1744738419443, status=DISPATCHED, age=2033ms, acks=0/3, retries=3}, channelName='fast-channel', status=DISPATCHED, age=2013ms, retryCount=0}
+Consumer MediumConsumer received event: Burst Message 2 at 1744738419441
+Message expired during network delay: TimestampedMessage{messageId='e1926557-7b91-492e-805b-794f8baa8535', event=BasicEvent{id='a003e8be-b4b0-4a91-a1fd-3d4574cb2f78', type='Burst Message 17', timestamp=1744738419443, status=DISPATCHED, age=2541ms, acks=0/3, retries=3}, channelName='fast-channel', status=DISPATCHED, age=2521ms, retryCount=0}
+Message expired during network delay: TimestampedMessage{messageId='fe1c9e49-776d-41c9-aafd-a77e2b4def9c', event=BasicEvent{id='d6f30d59-87b3-4b63-8f32-9957ee3861d3', type='Burst Message 18', timestamp=1744738419443, status=DISPATCHED, age=2541ms, acks=0/3, retries=3}, channelName='fast-channel', status=DISPATCHED, age=2521ms, retryCount=0}
+Message expired during network delay: TimestampedMessage{messageId='23150278-82b7-4967-b8f8-faa6cda34c0a', event=BasicEvent{id='613b8216-78da-4bc1-9f9f-62177a43b380', type='Burst Message 19', timestamp=1744738419443, status=DISPATCHED, age=2541ms, acks=0/3, retries=3}, channelName='fast-channel', status=DISPATCHED, age=2521ms, retryCount=0}
+Message expired during network delay: TimestampedMessage{messageId='96e6abd6-9439-40a7-883f-0c61b8470541', event=BasicEvent{id='9954ffcd-86f1-48d1-984f-184af59aa349', type='Burst Message 16', timestamp=1744738419443, status=DISPATCHED, age=2541ms, acks=0/3, retries=3}, channelName='fast-channel', status=DISPATCHED, age=2521ms, retryCount=0}
+Consumer MediumConsumer received event: Burst Message 4 at 1744738419441
+Consumer SlowConsumer received event: Message 2 at 1744738416410
+Consumer SlowConsumer received event: Message 1 at 1744738416410
+Consumer MediumConsumer received event: Burst Message 5 at 1744738419441
+Consumer SlowConsumer received event: Message 4 at 1744738416410
+Consumer SlowConsumer received event: Burst Message 0 at 1744738419440
+Consumer MediumConsumer received event: Burst Message 6 at 1744738419441
+Consumer MediumConsumer received event: Burst Message 7 at 1744738419442
+fast-channel metrics: Sent: 30, Acked: 0, Resent: 25, Failed: 5, Pending: 20, Success: 0.00%
+medium-channel metrics: Sent: 30, Acked: 0, Resent: 25, Failed: 5, Pending: 20, Success: 0.00%
+
+Waiting for slow channel messages...
+Message expired during network delay: TimestampedMessage{messageId='0db4183f-ea94-402a-8853-0807b94cb440', event=BasicEvent{id='3889e154-8c7b-4f23-a118-f589c7a4801c', type='Burst Message 8', timestamp=1744738419442, status=PARTIAL_ACKS, age=5377ms, acks=1/3, retries=3}, channelName='medium-channel', status=DISPATCHED, age=5354ms, retryCount=2}
+Message expired during network delay: TimestampedMessage{messageId='61df7aea-403e-4866-a041-d0249be9a863', event=BasicEvent{id='2628b26d-0163-4eb5-b247-eee59bb20f9c', type='Burst Message 10', timestamp=1744738419442, status=PARTIAL_ACKS, age=5947ms, acks=1/3, retries=3}, channelName='medium-channel', status=DISPATCHED, age=5924ms, retryCount=2}
+Consumer SlowConsumer received event: Burst Message 2 at 1744738419441
+Message expired during network delay: TimestampedMessage{messageId='b3309ccd-a36d-4b19-bd02-74b48e91249b', event=BasicEvent{id='eccfd52d-5759-47a9-ba72-dcdaab6c29ce', type='Burst Message 11', timestamp=1744738419442, status=PARTIAL_ACKS, age=6226ms, acks=1/3, retries=3}, channelName='medium-channel', status=DISPATCHED, age=6203ms, retryCount=2}
+Message expired during network delay: TimestampedMessage{messageId='d4d3c0ce-8c22-44cc-8c08-5f00fbb51f8f', event=BasicEvent{id='f5997c8b-25d8-4878-88a7-2a07338a268b', type='Burst Message 9', timestamp=1744738419442, status=PARTIAL_ACKS, age=6313ms, acks=1/3, retries=3}, channelName='medium-channel', status=DISPATCHED, age=6290ms, retryCount=2}
+Consumer SlowConsumer received event: Burst Message 1 at 1744738419441
+Consumer SlowConsumer received event: Burst Message 3 at 1744738419441
+Consumer SlowConsumer received event: Burst Message 4 at 1744738419441
+Queue channel-fast-channel backed up with 20 items
+Queue channel-medium-channel backed up with 20 items
+Queue channel-slow-channel backed up with 25 items
+Message expired during network delay: TimestampedMessage{messageId='2619eaa0-0473-4aa7-97e4-74ca80ffd6b4', event=BasicEvent{id='7d42de67-b6d5-4bf4-ad08-26e2281cf699', type='Burst Message 12', timestamp=1744738419442, status=DISPATCHED, age=7351ms, acks=0/3, retries=3}, channelName='medium-channel', status=DISPATCHED, age=7328ms, retryCount=2}
+Message expired during network delay: TimestampedMessage{messageId='964ad606-e27a-4569-829d-1c82f1584501', event=BasicEvent{id='b5cc466a-eb1c-4b30-8a96-5c1364e1ead5', type='Burst Message 13', timestamp=1744738419443, status=DISPATCHED, age=7817ms, acks=0/3, retries=3}, channelName='medium-channel', status=DISPATCHED, age=7795ms, retryCount=2}
+Message expired during network delay: TimestampedMessage{messageId='1a1677d9-9012-4fca-99ac-96f9b81e7c06', event=BasicEvent{id='547f01ba-74d1-46cb-a6ed-a848fd2b68cc', type='Burst Message 14', timestamp=1744738419443, status=DISPATCHED, age=7840ms, acks=0/3, retries=3}, channelName='medium-channel', status=DISPATCHED, age=7818ms, retryCount=2}
+Message expired during network delay: TimestampedMessage{messageId='c3814d4b-e9d7-44c1-991f-659271c2387b', event=BasicEvent{id='47019db1-f3ce-4582-a9f8-779e1c2ff280', type='Burst Message 15', timestamp=1744738419443, status=DISPATCHED, age=8310ms, acks=0/3, retries=3}, channelName='medium-channel', status=DISPATCHED, age=8288ms, retryCount=2}
+Consumer SlowConsumer received event: Burst Message 5 at 1744738419441
+Message expired during network delay: TimestampedMessage{messageId='9a2cf349-1978-468f-8d8c-67b9c67a87f1', event=BasicEvent{id='9954ffcd-86f1-48d1-984f-184af59aa349', type='Burst Message 16', timestamp=1744738419443, status=DISPATCHED, age=9190ms, acks=0/3, retries=3}, channelName='medium-channel', status=DISPATCHED, age=9168ms, retryCount=2}
+Message expired during network delay: TimestampedMessage{messageId='a8dccc04-5abf-4907-ac6f-07b009644e83', event=BasicEvent{id='d6f30d59-87b3-4b63-8f32-9957ee3861d3', type='Burst Message 18', timestamp=1744738419443, status=DISPATCHED, age=9214ms, acks=0/3, retries=3}, channelName='medium-channel', status=DISPATCHED, age=9191ms, retryCount=2}
+Consumer SlowConsumer received event: Burst Message 9 at 1744738419442
+Message expired during network delay: TimestampedMessage{messageId='310e8536-1e9d-4377-ae72-e9b9dd3e09bc', event=BasicEvent{id='613b8216-78da-4bc1-9f9f-62177a43b380', type='Burst Message 19', timestamp=1744738419443, status=DISPATCHED, age=10311ms, acks=0/3, retries=3}, channelName='medium-channel', status=DISPATCHED, age=10288ms, retryCount=2}
+Consumer SlowConsumer received event: Burst Message 7 at 1744738419442
+Consumer SlowConsumer received event: Burst Message 8 at 1744738419442
+Message expired during network delay: TimestampedMessage{messageId='b0a934fd-63cd-4b01-b98e-3a28b50311be', event=BasicEvent{id='a003e8be-b4b0-4a91-a1fd-3d4574cb2f78', type='Burst Message 17', timestamp=1744738419443, status=DISPATCHED, age=10745ms, acks=0/3, retries=3}, channelName='medium-channel', status=DISPATCHED, age=10722ms, retryCount=2}
+Queue channel-fast-channel backed up with 20 items
+Queue channel-medium-channel backed up with 20 items
+Queue channel-slow-channel backed up with 25 items
+Consumer SlowConsumer received event: Burst Message 10 at 1744738419442
+Consumer SlowConsumer received event: Burst Message 12 at 1744738419442
+Consumer SlowConsumer received event: Burst Message 15 at 1744738419443
+Consumer SlowConsumer received event: Burst Message 14 at 1744738419443
+Consumer SlowConsumer received event: Burst Message 17 at 1744738419443
+
+--- Final delivery metrics ---
+fast-channel metrics: Sent: 30, Acked: 0, Resent: 25, Failed: 5, Pending: 20, Success: 0.00%
+medium-channel metrics: Sent: 30, Acked: 0, Resent: 25, Failed: 5, Pending: 20, Success: 0.00%
+slow-channel metrics: Sent: 30, Acked: 0, Resent: 30, Failed: 0, Pending: 25, Success: NaN%
+
+Cleaning up...
+Network Delay Test Complete!
+Message expired during network delay: TimestampedMessage{messageId='5948676c-1126-4529-a479-96933cf48a64', event=BasicEvent{id='d6f30d59-87b3-4b63-8f32-9957ee3861d3', type='Burst Message 18', timestamp=1744738419443, status=DISPATCHED, age=15448ms, acks=0/3, retries=3}, channelName='slow-channel', status=DISPATCHED, age=15427ms, retryCount=1}
+Message expired during network delay: TimestampedMessage{messageId='71ba03c4-d227-4556-955a-bcec6a60782b', event=BasicEvent{id='613b8216-78da-4bc1-9f9f-62177a43b380', type='Burst Message 19', timestamp=1744738419443, status=DISPATCHED, age=16015ms, acks=0/3, retries=3}, channelName='slow-channel', status=DISPATCHED, age=15994ms, retryCount=1}
+
+
+RECONNECTION TEST RESULTS
+--------------------------------
+
+Starting Reconnection Test...
+Queue backups will be stored in: /var/folders/5x/3z0k7rh948j0zl95tgvfb9gc0000gn/T//pubsub-backups
+Publisher PublisherA registered with middleware
+Consumer ConsumerA registered with middleware
+Consumer ConsumerA subscribed to channel important-notifications
+
+--- Normal operation ---
+Publisher PublisherA published event Normal Message 0 to channel important-notifications
+Publisher PublisherA published event Normal Message 1 to channel important-notifications
+Publisher PublisherA published event Normal Message 2 to channel important-notifications
+Consumer ConsumerA received event: Normal Message 0 at 1744738514317
+Consumer ConsumerA received event: Normal Message 1 at 1744738514354
+Consumer ConsumerA received event: Normal Message 2 at 1744738514354
+
+--- Publisher disconnection ---
+Component PublisherA disconnected!
+Publisher PublisherA buffered message for channel important-notifications
+Publisher PublisherA buffered message for channel important-notifications
+Publisher PublisherA buffered message for channel important-notifications
+Publisher PublisherA buffered message for channel important-notifications
+Publisher PublisherA buffered message for channel important-notifications
+Publisher buffer size: 5
+
+--- Publisher reconnection ---
+Component PublisherA reconnected!
+Publisher PublisherA successfully published buffered message to important-notifications
+Publisher PublisherA successfully published buffered message to important-notifications
+Publisher PublisherA successfully published buffered message to important-notifications
+Publisher PublisherA successfully published buffered message to important-notifications
+Publisher PublisherA successfully published buffered message to important-notifications
+Consumer ConsumerA received event: Buffered Message 0 at 1744738514361
+Consumer ConsumerA received event: Buffered Message 1 at 1744738514362
+Consumer ConsumerA received event: Buffered Message 2 at 1744738514362
+Consumer ConsumerA received event: Buffered Message 3 at 1744738514362
+Consumer ConsumerA received event: Buffered Message 4 at 1744738514363
+
+--- Consumer disconnection ---
+Component ConsumerA disconnected!
+Publisher PublisherA published event Message during consumer disconnect 0 to channel important-notifications
+Publisher PublisherA published event Message during consumer disconnect 1 to channel important-notifications
+Publisher PublisherA published event Message during consumer disconnect 2 to channel important-notifications
+Consumer ConsumerA is disconnected, cannot consume event
+Consumer ConsumerA is disconnected, cannot consume event
+Consumer ConsumerA is disconnected, cannot consume event
+
+--- Consumer reconnection ---
+Component ConsumerA reconnected!
+Consumer ConsumerA resubscribed to important-notifications
+Publisher PublisherA published event Message after consumer reconnect 0 to channel important-notifications
+Publisher PublisherA published event Message after consumer reconnect 1 to channel important-notifications
+Publisher PublisherA published event Message after consumer reconnect 2 to channel important-notifications
+Consumer ConsumerA received event: Message during consumer disconnect 0 at 1744738514364
+Consumer ConsumerA received event: Message during consumer disconnect 1 at 1744738514364
+Consumer ConsumerA received event: Message during consumer disconnect 2 at 1744738514364
+Consumer ConsumerA received event: Message after consumer reconnect 0 at 1744738514365
+Consumer ConsumerA received event: Message after consumer reconnect 1 at 1744738514365
+Consumer ConsumerA received event: Message after consumer reconnect 2 at 1744738514365
+
+Cleaning up...
+Reconnection Test Complete!
+
+QUEUE CRASH TEST RESULTS
+--------------------------------
+Starting Queue Crash Recovery Test...
+Queue backups will be stored in: /var/folders/5x/3z0k7rh948j0zl95tgvfb9gc0000gn/T//pubsub-backups
+Publisher DataProducer registered with middleware
+Consumer DataConsumer registered with middleware
+Consumer DataConsumer subscribed to channel critical-data
+Consumer DataConsumer subscribed to channel regular-data
+
+--- Initial publishing ---
+Publisher DataProducer published event Critical Message 0 to channel critical-data
+Publisher DataProducer published event Regular Message 0 to channel regular-data
+Publisher DataProducer published event Critical Message 1 to channel critical-data
+Publisher DataProducer published event Regular Message 1 to channel regular-data
+Publisher DataProducer published event Critical Message 2 to channel critical-data
+Publisher DataProducer published event Regular Message 2 to channel regular-data
+Publisher DataProducer published event Critical Message 3 to channel critical-data
+Publisher DataProducer published event Regular Message 3 to channel regular-data
+Publisher DataProducer published event Critical Message 4 to channel critical-data
+Publisher DataProducer published event Regular Message 4 to channel regular-data
+
+--- Forcing backup before crash ---
+Queue channel-regular-data backed up with 5 items
+Queue channel-critical-data backed up with 5 items
+
+--- Simulating queue crash for regular-data channel ---
+Simulating crash for channel regular-data's event queue
+Queue channel-regular-data has crashed!
+
+--- Attempting to publish to crashed channel ---
+Channel regular-data detected queue crash while adding event
+Component DataProducer disconnected!
+Publisher DataProducer buffered message for channel regular-data
+Publish to regular-data succeeded (unexpected)
+
+--- Simulating queue crash for critical-data channel ---
+Simulating crash for channel critical-data's event queue
+Queue channel-critical-data has crashed!
+
+--- Attempting to publish to critical channel ---
+Publisher DataProducer buffered message for channel critical-data
+Publish to critical-data succeeded (expected with auto-recovery)
+
+--- Manually recovering regular-data channel queue ---
+Channel regular-data attempting to recover event queue...
+Recovering queue channel-regular-data...
+Queue channel-regular-data recovered with 5 items
+Channel regular-data successfully recovered event queue
+Regular-data channel queue recovered successfully
+
+--- Publishing after recovery ---
+Publisher DataProducer buffered message for channel critical-data
+Publisher DataProducer buffered message for channel regular-data
+Publisher DataProducer buffered message for channel critical-data
+Publisher DataProducer buffered message for channel regular-data
+Publisher DataProducer buffered message for channel critical-data
+Publisher DataProducer buffered message for channel regular-data
+
+--- Dispatching events ---
+Channel critical-data detected queue crash while dispatching events
+Channel critical-data attempting to recover event queue...
+Recovering queue channel-critical-data...
+Queue channel-critical-data recovered with 5 items
+Channel critical-data successfully recovered event queue
+Consumer DataConsumer received event: Critical Message 0 at 1744738588606
+Consumer DataConsumer received event: Critical Message 1 at 1744738588642
+Consumer DataConsumer received event: Critical Message 2 at 1744738588642
+Consumer DataConsumer received event: Critical Message 3 at 1744738588643
+Consumer DataConsumer received event: Critical Message 4 at 1744738588643
+Consumer DataConsumer received event: Regular Message 0 at 1744738588642
+Consumer DataConsumer received event: Regular Message 1 at 1744738588642
+Consumer DataConsumer received event: Regular Message 2 at 1744738588643
+Consumer DataConsumer received event: Regular Message 3 at 1744738588643
+Consumer DataConsumer received event: Regular Message 4 at 1744738588643
+
+Cleaning up...
+Queue Crash Recovery Test Complete!
+
+CONSUMER CRASH TEST RESULTS
+--------------------------------
+Starting Consumer Crash Test...
+Queue backups will be stored in: /var/folders/5x/3z0k7rh948j0zl95tgvfb9gc0000gn/T//pubsub-backups
+Publisher MainPublisher registered with middleware
+Consumer Consumer1 registered with middleware
+Consumer Consumer2 registered with middleware
+
+--- Initial subscriptions ---
+Consumer Consumer1 subscribed to channel important-updates
+Consumer Consumer1 subscribed to channel status-reports
+Consumer Consumer2 subscribed to channel important-updates
+
+--- Initial publishing ---
+Publisher MainPublisher published event Important Update 1 to channel important-updates
+Publisher MainPublisher published event Status Report 1 to channel status-reports
+Consumer Consumer2 received event: Important Update 1 at 1744738615760
+Consumer Consumer1 received event: Important Update 1 at 1744738615760
+Consumer Consumer1 received event: Status Report 1 at 1744738615799
+
+--- Simulating consumer crash ---
+Simulating crash for consumer Consumer1
+Consuming event on crashed consumer failed as expected: Consumer Consumer1 has crashed and not yet recovered
+
+--- Waiting for health monitor to detect crash ---
+Consumer status: HEALTHY
+Consumer status: HEALTHY
+Consumer status: HEALTHY
+Consumer status: HEALTHY
+Consumer status: HEALTHY
+Consumer status: HEALTHY
+Consumer status: HEALTHY
+Consumer status: HEALTHY
+Consumer Consumer1 suspected dead (no heartbeat for 7.505 seconds)
+Consumer status: SUSPECTED_DEAD
+Consumer status: SUSPECTED_DEAD
+Consumer Consumer1 is confirmed dead, preparing for recovery...
+Consumer Consumer1 confirmed dead (no heartbeat for 10.004 seconds)
+
+--- Publishing while consumer is crashed ---
+Publisher MainPublisher published event Important Update 2 to channel important-updates
+Publisher MainPublisher published event Status Report 2 to channel status-reports
+Consumer Consumer2 received event: Important Update 2 at 1744738625846
+Error in message delivery: Consumer Consumer1 has crashed and not yet recovered
+Error in message delivery: Consumer Consumer1 has crashed and not yet recovered
+
+--- Recovering consumer ---
+Recovering consumer Consumer1
+Consumer Consumer1 has recovered, restoring subscriptions...
+Consumer Consumer1 resubscribed to important-updates
+Consumer Consumer1 resubscribed to status-reports
+Consumer Consumer1 resubscribed to important-updates
+Consumer Consumer1 resubscribed to status-reports
+
+--- Verifying subscriptions after recovery ---
+Consumer1 in important-updates subscribers: true
+Consumer1 in status-reports subscribers: true
+
+--- Publishing after recovery ---
+Publisher MainPublisher published event Important Update 3 to channel important-updates
+Publisher MainPublisher published event Status Report 3 to channel status-reports
+Consumer Consumer1 received event: Important Update 2 at 1744738625846
+Consumer Consumer2 received event: Important Update 3 at 1744738627856
+Consumer Consumer1 received event: Important Update 3 at 1744738627856
+Consumer Consumer1 received event: Status Report 2 at 1744738625846
+Consumer Consumer1 received event: Status Report 3 at 1744738627856
+
+Cleaning up...
+Consumer Crash Test Complete!
+
