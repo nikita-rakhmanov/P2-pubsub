@@ -245,7 +245,7 @@ public class PersistentQueue<T extends Serializable> {
         
         // Backup items to disk
         boolean success = backupManager.backupQueue(queueId, items);
-        if (success) {
+        if (success && items.size() > 0) {
             System.out.println("Queue " + queueId + " backed up with " + items.size() + " items");
         }
     }
