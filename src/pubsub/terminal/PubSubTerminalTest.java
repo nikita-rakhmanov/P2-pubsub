@@ -235,7 +235,7 @@ public class PubSubTerminalTest {
             System.out.println("4. QueueCrashTest - Tests handling of crashed queues (R5)");
             System.out.println("5. ReconnectionTest - Tests connection interruptions (R4)");
             System.out.println("6. PerformanceTest - Tests system message throughput");
-            System.out.println("7. ComprehensiveTestSuite - Runs all tests");
+            System.out.println("7. Main Test Suite - Runs all tests");
             System.out.println("0. Back to Main Menu");
             System.out.print("Enter your choice: ");
             
@@ -272,7 +272,7 @@ public class PubSubTerminalTest {
                         src.pubsub.PerformanceTest.main(new String[0]);
                         break;
                     case "7":
-                        System.out.println("\nRunning ComprehensiveTestSuite...");
+                        System.out.println("\nRunning MainTestSuite...");
                         // First ask here about output so we don't get confused scanners
                         System.out.print("Output test results to: (1) Console or (2) File 'test_results.txt'? ");
                         String outputChoice = scanner.nextLine().trim();
@@ -281,11 +281,11 @@ public class PubSubTerminalTest {
                         if (fileOutput) {
                             System.out.println("Running tests with output to file test_results.txt");
                             // Create a parameter to tell the test suite to use file output without prompting
-                            ComprehensiveTestSuite.main(new String[]{"file"});
+                            MainTestSuite.main(new String[]{"file"});
                         } else {
                             System.out.println("Running tests with console output");
                             // Tell the test suite to use console output without prompting
-                            ComprehensiveTestSuite.main(new String[]{"console"});
+                            MainTestSuite.main(new String[]{"console"});
                         }
                         break;
                     case "0":

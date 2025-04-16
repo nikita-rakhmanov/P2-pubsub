@@ -11,7 +11,6 @@ import src.pubsub.qos.fault.ConsumerHealthMonitor;
 
 /**
  * Implementation of the Consumer interface that includes QoS features.
- * Combines features from BasicConsumer, StatefulConsumer, ReconnectingConsumer, and ReliableConsumer.
  */
 public class BasicConsumer implements Consumer, Serializable {
     private static final long serialVersionUID = 1L;
@@ -243,8 +242,6 @@ public class BasicConsumer implements Consumer, Serializable {
         reconnectScheduler.scheduleAtFixedRate(() -> {
             if (!connectionManager.isConnected(id) && !crashed) {
                 // Try to reconnect
-                // In a real system, this would involve network operations
-                // For simulation, we'll just randomly reconnect sometimes
                 if (Math.random() < 0.3) { // 30% chance of reconnection each attempt
                     connectionManager.simulateReconnection(id);
                     resubscribeToChannels();

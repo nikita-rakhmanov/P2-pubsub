@@ -8,9 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Enhanced implementation of the Middleware interface that includes QoS features.
- * Combines features from BasicMiddleware, RecoverableMiddleware, 
- * ReliableMiddleware, and DelayTolerantMiddleware.
+ * implementation of the Middleware interface that includes QoS features.
  */
 public class BasicMiddleware implements Middleware {
     private final Map<String, BasicChannel> channels = new HashMap<>();

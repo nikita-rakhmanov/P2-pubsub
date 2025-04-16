@@ -7,8 +7,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Enhanced implementation of the Event interface that includes QoS features.
- * Combines features from BasicEvent, TimestampedMessage, and TrackableMessage.
+ * Implementation of the Event interface that includes QoS features.
  */
 public class BasicEvent implements Event, Serializable {
     private static final long serialVersionUID = 1L;

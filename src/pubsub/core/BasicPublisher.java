@@ -7,8 +7,7 @@ import src.pubsub.qos.fault.ConnectionManager;
 import src.pubsub.qos.fault.MessageBuffer;
 
 /**
- * Enhanced implementation of the Publisher interface that includes QoS features.
- * Combines features from BasicPublisher and ReconnectingPublisher.
+ * Implementation of the Publisher interface that includes QoS features.
  */
 public class BasicPublisher implements Publisher {
     private Middleware middleware;

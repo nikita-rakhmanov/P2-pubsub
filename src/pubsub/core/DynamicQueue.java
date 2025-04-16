@@ -2,7 +2,7 @@ package src.pubsub.core;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.locks.ReentrantLock; // Or use synchronized blocks
+import java.util.concurrent.locks.ReentrantLock; 
 
 /**
  * Thread-safe dynamic queue implementation that can grow as needed.
@@ -51,7 +51,7 @@ public class DynamicQueue<T> {
             }
 
             T element = (T) elements[head];
-            elements[head] = null; // Help GC
+            elements[head] = null; 
             head = (head + 1) % capacity;
             size--;
 
@@ -88,7 +88,7 @@ public class DynamicQueue<T> {
         }
     }
 
-    // Grow must ONLY be called by add() while already holding the lock
+    // Grow must only be called by add() while already holding the lock
     private void grow() {
         int newCapacity = capacity * 2;
         Object[] newElements = new Object[newCapacity];

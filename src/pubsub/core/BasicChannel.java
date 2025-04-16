@@ -303,9 +303,7 @@ public class BasicChannel implements Channel {
      * Purges expired events from the queue.
      */
     private void purgeExpiredEvents() {
-        // In a real implementation, we would scan the queue for expired events
-        // PersistentQueue doesn't support scanning, so we handle expiration during dispatch
-        // This method is kept for future extension
+        // This method is for future extension
     }
     
     /**
@@ -396,7 +394,6 @@ public class BasicChannel implements Channel {
     
     /**
      * Creates a TimestampedMessage adapter for a BasicEvent.
-     * This is needed for compatibility with the existing NetworkSimulator.
      * 
      * @param event the BasicEvent to adapt
      * @param channelName the channel name

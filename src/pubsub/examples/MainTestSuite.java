@@ -17,10 +17,10 @@ import java.io.IOException;
 import java.util.Scanner;
 
 /**
- * Comprehensive test suite for the Basic Pub/Sub implementation.
+ * Extensive test suite for my Pub/Sub implementation.
  * Covers R1-R8 requirements and includes a basic performance test.
  */
-public class ComprehensiveTestSuite {
+public class MainTestSuite {
 
     private static final String TEST_CHANNEL_1 = "test-channel-1";
     private static final String TEST_CHANNEL_2 = "test-channel-2";
@@ -242,8 +242,7 @@ public class ComprehensiveTestSuite {
         middleware.dispatchAllEvents();
         Thread.sleep(DISPATCH_WAIT_MS);
 
-        // Note: Event C2 might be lost if TTL is short and disconnect is long,
-        // or if channel doesn't retry enough. The critical part is C3 reception.
+        // Event C2 might be lost if TTL is short and disconnect is long, or if channel doesn't retry enough. The critical part is C3 reception.
         assert consumer.getReceivedEventCount() >= 2 : "Consumer did not receive message after reconnect";
         System.out.println("Consumer Connection Interruption: OK (Received " + consumer.getReceivedEventCount() + " events)");
 
@@ -252,7 +251,7 @@ public class ComprehensiveTestSuite {
 
     private static void testQueueCrashRecovery() throws InterruptedException {
         System.out.println("\n--- Testing R5: Crashing Queues ---");
-        // Use non-default settings for easier testing
+        // non-default settings for easier testing
         BasicMiddleware middleware = new BasicMiddleware(30000, 3, 60);
         BasicPublisher publisher = new BasicPublisher("PubR5");
         TestConsumer consumer = new TestConsumer("SubR5");
@@ -283,12 +282,12 @@ public class ComprehensiveTestSuite {
             System.out.println("Caught expected exception on publish during crash: " + e.getMessage());
         }
         try {
-            middleware.dispatchAllEvents(); // Should potentially log error or throw if accessing crashed queue
+            middleware.dispatchAllEvents(); // Should log error or throw if accessing crashed queue
         } catch (Exception e) {
              System.out.println("Caught expected exception on dispatch during crash: " + e.getMessage());
         }
         assert consumer.getReceivedEventCount() == 0 : "Consumer received message from crashed queue";
-        assert channel.getQueueSize() == -1 || channel.isQueueCrashed() : "Queue size check failed during crash"; // Size might return -1 or throw
+        assert channel.getQueueSize() == -1 || channel.isQueueCrashed() : "Queue size check failed during crash"; // Size might return -1 or throw if queue is crashed
 
 
         System.out.println("Manually recovering queue...");
@@ -314,7 +313,7 @@ public class ComprehensiveTestSuite {
         middleware.dispatchAllEvents(); // Should also trigger recovery if needed
         Thread.sleep(DISPATCH_WAIT_MS);
 
-        assert consumer.getReceivedEventCount() >= 3 : "Consumer did not receive messages after auto-recovery"; // Q1, Q3, Q4 expected if persistence works perfectly
+        assert consumer.getReceivedEventCount() >= 3 : "Consumer did not receive messages after auto-recovery"; // Q1, Q3, Q4 expected if persistence works well
         System.out.println("Queue Crash Recovery: OK (Received " + consumer.getReceivedEventCount() + " events)");
 
 
@@ -324,13 +323,8 @@ public class ComprehensiveTestSuite {
      // Wrapper to run the existing ConsumerCrashTest main method
      private static void runConsumerCrashTest() throws InterruptedException {
          System.out.println("\n--- Running R6: Consumer Crash Test (External Main) ---");
-         ConsumerCrashTest.main(null); // Assuming it's runnable this way
+         ConsumerCrashTest.main(null); 
          System.out.println("Consumer Crash Test: Ran (Check separate output)");
-         // Note: This test manages its own setup/shutdown, including ConsumerHealthMonitor
-         // We might need to re-initialize singletons if they were shut down by this test.
-         // Re-registering components to ConnectionManager might be needed if it's a singleton too.
-         System.out.println("Re-initializing any potentially shutdown singletons (if necessary)...");
-         // Example: ConsumerHealthMonitor.getInstance().reset(); // If such a method existed
      }
 
 
@@ -434,9 +428,7 @@ public class ComprehensiveTestSuite {
         middleware.dispatchAllEvents();
         Thread.sleep(DISPATCH_WAIT_MS); // Allow dispatch (no simulated loss yet)
 
-        // Manually inspect event state after delivery but before explicit ack (BasicConsumer acks internally)
-        // In a real test framework, we'd intercept/mock the consumer's consume method.
-        // Here, we rely on the fact that BasicConsumer calls acknowledgeConsumer.
+        // Manually inspect event state after delivery but before explicit ack 
         assert event.getStatus() == BasicEvent.DeliveryStatus.DELIVERED || event.getStatus() == BasicEvent.DeliveryStatus.PARTIAL_ACKS : "Event status not DELIVERED/PARTIAL after dispatch (Status: " + event.getStatus() + ")";
         assert event.isFullyAcknowledged() : "Event not fully acknowledged";
         System.out.println("Acknowledgement: OK");
@@ -532,6 +524,7 @@ public class ComprehensiveTestSuite {
         });
         
         // Only show that we're running the test
+        // doing this to avoid cluttering the console with too much output - more than 10k messages 
         System.out.println("Running performance test with 10000 messages... (output suppressed)");
         
         // Redirect output to filtered stream
@@ -596,8 +589,6 @@ public class ComprehensiveTestSuite {
                            publishedCount.incrementAndGet();
                      }
                 }
-                // Publisher instance can be discarded or shut down if needed, but registration matters most.
-                 // publisher.shutdown(); // Careful if publisher has internal state needed later
             });
         }
 
@@ -673,7 +664,7 @@ public class ComprehensiveTestSuite {
 
         // Verification
         assert publishedCount.get() == numMessages : "Incorrect number of messages published";
-        assert receivedCount.get() >= numMessages : "Incorrect number of messages received (Received " + receivedCount.get() + ")"; // Use >= if duplicates possible
+        assert receivedCount.get() >= numMessages : "Incorrect number of messages received (Received " + receivedCount.get() + ")"; 
 
         if (consumeRate >= 800) { // Allow some leeway from 1000
             System.out.println("Performance Test: PASSED (Rate >= 800 msg/sec)");

@@ -2,7 +2,7 @@ package src.pubsub.core;
 
 /**
  * Interface for events in the pub-sub system.
- * Simple design with timestamp and type for basic QoS.
+ * With timestamp and type for QoS.
  */
 public interface Event {
     /**
