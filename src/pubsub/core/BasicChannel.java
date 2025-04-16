@@ -12,8 +12,7 @@ import src.pubsub.qos.network.NetworkSimulator;
 import src.pubsub.qos.network.TimestampedMessage;
 
 /**
- * Enhanced implementation of the Channel interface that includes QoS features.
- * Combines features from BasicChannel, RecoverableChannel, DelayTolerantChannel, and ReliableChannel.
+ * Implementation of the Channel interface that includes QoS features.
  */
 public class BasicChannel implements Channel {
     private final String name;
@@ -305,7 +304,7 @@ public class BasicChannel implements Channel {
      */
     private void purgeExpiredEvents() {
         // In a real implementation, we would scan the queue for expired events
-        // However, our PersistentQueue doesn't support scanning, so we handle expiration during dispatch
+        // PersistentQueue doesn't support scanning, so we handle expiration during dispatch
         // This method is kept for future extension
     }
     

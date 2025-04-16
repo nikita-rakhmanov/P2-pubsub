@@ -14,6 +14,7 @@ import java.io.PrintStream;
 import java.util.Date;
 import java.io.FilterOutputStream;
 import java.io.IOException;
+import java.util.Scanner;
 
 /**
  * Comprehensive test suite for the Basic Pub/Sub implementation.
@@ -27,15 +28,40 @@ public class ComprehensiveTestSuite {
     private static final int FAULT_WAIT_MS = 2000; // Time to wait for fault detection/recovery
 
     public static void main(String[] args) throws InterruptedException {
-        // Set up file output
         PrintStream originalOut = System.out;
         PrintStream originalErr = System.err;
+        boolean fileOutput = false;
         
-        try (PrintStream fileOut = new PrintStream(new FileOutputStream("test_results.txt"))) {
-            // Redirect output to file
-            System.setOut(fileOut);
-            System.setErr(fileOut);
+        // Check for command line arguments from PubSubTerminalTest
+        if (args.length > 0) {
+            if ("file".equals(args[0])) {
+                fileOutput = true;
+            } else {
+                fileOutput = false;
+            }
+        } else {
+            // Only prompt if run standalone
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("===== Comprehensive Pub/Sub Test Suite =====");
+            System.out.print("Output test results to: (1) Console or (2) File 'test_results.txt'? ");
+            String choice = scanner.nextLine().trim();
+            fileOutput = choice.equals("2");
+            scanner.close();
+        }
+        
+        try {
+            if (fileOutput) {
+                // Set up file output
+                PrintStream fileOut = new PrintStream(new FileOutputStream("test_results.txt"));
+                // Redirect output to file
+                System.setOut(fileOut);
+                System.setErr(fileOut);
+                System.out.println("Writing test results to test_results.txt...");
+            } else {
+                System.out.println("Displaying test results in console...");
+            }
             
+            // Output test header to wherever output is directed
             System.out.println("===== Starting Comprehensive Pub/Sub Test Suite =====");
             System.out.println("Test run started at: " + new Date());
 
@@ -54,12 +80,21 @@ public class ComprehensiveTestSuite {
 
             System.out.println("\n===== Comprehensive Test Suite Complete =====");
         } catch (FileNotFoundException e) {
-            originalErr.println("Error creating output file: " + e.getMessage());
+            // Reset output before reporting error
+            System.setOut(originalOut);
+            System.setErr(originalErr);
+            System.err.println("Error creating output file: " + e.getMessage());
         } finally {
             // Restore original output streams
             System.setOut(originalOut);
             System.setErr(originalErr);
-            System.out.println("Test complete. Results written to test_results.txt");
+            
+            // Final message to console about where output went
+            if (fileOutput) {
+                System.out.println("Test complete. Results written to test_results.txt");
+            } else {
+                System.out.println("Test complete.");
+            }
         }
     }
 
@@ -307,6 +342,8 @@ public class ComprehensiveTestSuite {
 
         publisher.registerWithMiddleware(middleware);
         consumer.registerWithMiddleware(middleware);
+        @SuppressWarnings("unused")
+        BasicChannel channel = (BasicChannel) middleware.createChannel(TEST_CHANNEL_1);
         consumer.subscribe(TEST_CHANNEL_1);
 
         int delayMs = 1000; // 1 second delay
@@ -343,12 +380,16 @@ public class ComprehensiveTestSuite {
 
         publisher.registerWithMiddleware(middleware);
         consumer.registerWithMiddleware(middleware);
+        @SuppressWarnings("unused")
+        BasicChannel channel = (BasicChannel) middleware.createChannel(TEST_CHANNEL_1);
         consumer.subscribe(TEST_CHANNEL_1);
 
         System.out.println("Simulating network delay (" + delayMs + "ms) longer than TTL (" + ttlMs + "ms)");
         middleware.simulateChannelNetworkDelay(TEST_CHANNEL_1, delayMs);
 
         publisher.publish(TEST_CHANNEL_1, new BasicEvent("Event E1 (Should Expire)")); // Uses channel default TTL
+        @SuppressWarnings("unused")
+        long startTime = System.currentTimeMillis();
         middleware.dispatchAllEvents();
 
         // Wait for dispatch attempt AND expiration time
@@ -380,6 +421,8 @@ public class ComprehensiveTestSuite {
         publisher.registerWithMiddleware(middleware);
         consumer1.registerWithMiddleware(middleware);
         consumer2.registerWithMiddleware(middleware);
+        @SuppressWarnings("unused")
+        BasicChannel channel = (BasicChannel) middleware.createChannel(TEST_CHANNEL_1);
         consumer1.subscribe(TEST_CHANNEL_1);
         consumer2.subscribe(TEST_CHANNEL_1);
 

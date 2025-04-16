@@ -1,17 +1,17 @@
 package src.pubsub.terminal;
 
 import src.pubsub.core.*;
+import src.pubsub.examples.*;
 
 import java.util.*;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.Executors;
-import java.io.FilterOutputStream;
-import java.io.IOException;
 import java.io.PrintStream;
 
 /**
  * Terminal-based application for testing and demonstrating the pub-sub system.
- * This application provides a text-based interface to test all QoS features.
+ * This application provides a text-based interface to test all QoS features
+ * and run pre-made test classes.
  */
 public class PubSubTerminalTest {
     // Core components
@@ -25,14 +25,10 @@ public class PubSubTerminalTest {
     // Scanner for user input
     private Scanner scanner;
     
-    // Add to PubSubTerminalTest.java
-    private boolean quietMode = false;
-    
     public PubSubTerminalTest() {
         middleware = new BasicMiddleware(30000, 3, 30);
         scanner = new Scanner(System.in);
         scheduler = Executors.newScheduledThreadPool(1);
-        configureLogging(); // Initialize logging configuration
     }
     
     /**
@@ -60,7 +56,7 @@ public class PubSubTerminalTest {
                     manageConsumers();
                     break;
                 case "4":
-                    runQoSTests();
+                    runPremadeTests();
                     break;
                 case "5":
                     showStatistics();
@@ -68,9 +64,6 @@ public class PubSubTerminalTest {
                 case "6":
                     middleware.dispatchAllEvents();
                     System.out.println("All events dispatched");
-                    break;
-                case "7":
-                    toggleQuietMode();
                     break;
                 case "0":
                     running = false;
@@ -89,57 +82,11 @@ public class PubSubTerminalTest {
         System.out.println("1. Manage Channels");
         System.out.println("2. Manage Publishers");
         System.out.println("3. Manage Consumers");
-        System.out.println("4. Run QoS Tests");
+        System.out.println("4. Run Premade Tests");
         System.out.println("5. Show Statistics");
         System.out.println("6. Dispatch All Events");
-        System.out.println("7. Toggle Quiet Mode (" + (quietMode ? "enabled" : "disabled") + ")");
         System.out.println("0. Exit");
-        System.out.println("Enter your choice: "); //println fixes the issue with the quite mode filtering
-    }
-    
-    // Add this method to enable/disable quiet mode
-    private void toggleQuietMode() {
-        quietMode = !quietMode;
-        System.out.println("Quiet mode " + (quietMode ? "enabled" : "disabled"));
-        
-        // Configure loggers based on quiet mode
-        configureLogging();
-    }
-
-    // Method to configure logging behavior
-    private void configureLogging() {
-        // Redirect System.out if in quiet mode
-        if (quietMode) {
-            // Store original System.out
-            final PrintStream originalOut = System.out;
-            
-            // Create filtered print stream that only allows certain messages
-            PrintStream filteredOut = new PrintStream(new FilterOutputStream(originalOut) {
-                @Override
-                public void write(byte[] b, int off, int len) throws IOException {
-                    String message = new String(b, off, len);
-                    // Only print messages that start with these prefixes or don't contain "backed up"
-                    // Also allow "Enter your choice: " messages
-                    if (message.startsWith("===") || 
-                        message.startsWith("-") || 
-                        message.startsWith(">") || 
-                        message.contains("Enter your choice:") ||
-                        !message.contains("backed up")) {
-                        super.write(b, off, len);
-                    }
-                }
-                
-                @Override
-                public void write(int b) throws IOException {
-                    super.write(b);
-                }
-            });
-            
-            System.setOut(filteredOut);
-        } else {
-            // Reset to standard System.out (if we stored the original)
-            System.setOut(System.out);
-        }
+        System.out.print("Enter your choice: ");
     }
     
     private void manageChannels() {
@@ -277,46 +224,88 @@ public class PubSubTerminalTest {
         }
     }
     
-    private void runQoSTests() {
+    private void runPremadeTests() {
         boolean back = false;
         
         while (!back) {
-            System.out.println("\n=== QoS Tests ===");
-            System.out.println("1. Test R4: Temporary Interruptions");
-            System.out.println("2. Test R5: Crashing Queues");
-            System.out.println("3. Test R6: Crashing Consumers");
-            System.out.println("4. Test R7: Network Delays");
-            System.out.println("5. Test R8: Dropped Messages");
-            System.out.println("6. Run Integrated QoS Test");
+            System.out.println("\n=== Premade Tests ===");
+            System.out.println("1. ConsumerCrashTest - Tests handling of crashed consumers (R6)");
+            System.out.println("2. MessageLossTest - Tests handling of message loss (R8)");
+            System.out.println("3. NetworkDelayTest - Tests handling of network delays (R7)");
+            System.out.println("4. QueueCrashTest - Tests handling of crashed queues (R5)");
+            System.out.println("5. ReconnectionTest - Tests connection interruptions (R4)");
+            System.out.println("6. PerformanceTest - Tests system message throughput");
+            System.out.println("7. ComprehensiveTestSuite - Runs all tests");
             System.out.println("0. Back to Main Menu");
             System.out.print("Enter your choice: ");
             
             String choice = scanner.nextLine().trim();
             
-            switch (choice) {
-                case "1":
-                    runR4Test();
-                    break;
-                case "2":
-                    runR5Test();
-                    break;
-                case "3":
-                    runR6Test();
-                    break;
-                case "4":
-                    runR7Test();
-                    break;
-                case "5":
-                    runR8Test();
-                    break;
-                case "6":
-                    runIntegratedTest();
-                    break;
-                case "0":
-                    back = true;
-                    break;
-                default:
-                    System.out.println("Invalid choice, please try again.");
+            // Save current System.out/err for restoration after test
+            PrintStream originalOut = System.out;
+            PrintStream originalErr = System.err;
+            
+            try {
+                switch (choice) {
+                    case "1":
+                        System.out.println("\nRunning ConsumerCrashTest...");
+                        ConsumerCrashTest.main(new String[0]);
+                        break;
+                    case "2":
+                        System.out.println("\nRunning MessageLossTest...");
+                        MessageLossTest.main(new String[0]);
+                        break;
+                    case "3":
+                        System.out.println("\nRunning NetworkDelayTest...");
+                        NetworkDelayTest.main(new String[0]);
+                        break;
+                    case "4":
+                        System.out.println("\nRunning QueueCrashTest...");
+                        QueueCrashTest.main(new String[0]);
+                        break;
+                    case "5":
+                        System.out.println("\nRunning ReconnectionTest...");
+                        ReconnectionTest.main(new String[0]);
+                        break;
+                    case "6":
+                        System.out.println("\nRunning PerformanceTest...");
+                        src.pubsub.PerformanceTest.main(new String[0]);
+                        break;
+                    case "7":
+                        System.out.println("\nRunning ComprehensiveTestSuite...");
+                        // First ask here about output so we don't get confused scanners
+                        System.out.print("Output test results to: (1) Console or (2) File 'test_results.txt'? ");
+                        String outputChoice = scanner.nextLine().trim();
+                        boolean fileOutput = outputChoice.equals("2");
+                        
+                        if (fileOutput) {
+                            System.out.println("Running tests with output to file test_results.txt");
+                            // Create a parameter to tell the test suite to use file output without prompting
+                            ComprehensiveTestSuite.main(new String[]{"file"});
+                        } else {
+                            System.out.println("Running tests with console output");
+                            // Tell the test suite to use console output without prompting
+                            ComprehensiveTestSuite.main(new String[]{"console"});
+                        }
+                        break;
+                    case "0":
+                        back = true;
+                        break;
+                    default:
+                        System.out.println("Invalid choice, please try again.");
+                }
+            } catch (Exception e) {
+                System.err.println("Error running test: " + e.getMessage());
+                e.printStackTrace();
+            } finally {
+                // Always restore original output streams
+                System.setOut(originalOut);
+                System.setErr(originalErr);
+                
+                if (!choice.equals("0")) {
+                    System.out.println("\nTest completed. Press Enter to continue...");
+                    scanner.nextLine();
+                }
             }
         }
     }
@@ -793,484 +782,6 @@ public class PubSubTerminalTest {
             System.out.println("Invalid number format.");
             return null;
         }
-    }
-    
-    // QoS test methods
-    
-    private void runR4Test() {
-        System.out.println("\n=== Running R4 Test: Temporary Interruptions ===");
-        
-        // Ensure we have necessary components
-        if (middleware.listChannels().isEmpty() || publishers.isEmpty() || consumers.isEmpty()) {
-            System.out.println("Test requires at least one channel, publisher, and consumer.");
-            return;
-        }
-        
-        // Get components for test
-        String publisherName = publishers.keySet().iterator().next();
-        String consumerName = consumers.keySet().iterator().next();
-        String channelName = middleware.listChannels().get(0);
-        
-        // Ensure consumer is subscribed
-        consumers.get(consumerName).subscribe(channelName);
-        
-        System.out.println("1. Testing publisher disconnection/reconnection");
-        
-        // Disconnect publisher
-        publishers.get(publisherName).simulateDisconnection();
-        System.out.println("   - Publisher disconnected: " + publisherName);
-        
-        // Try to publish while disconnected
-        for (int i = 0; i < 3; i++) {
-            publishers.get(publisherName).publish(channelName, new BasicEvent("Buffered Event " + i));
-        }
-        System.out.println("   - Published 3 events while disconnected (buffered)");
-        
-        // Reconnect publisher
-        publishers.get(publisherName).simulateReconnection();
-        System.out.println("   - Publisher reconnected: " + publisherName);
-        
-        // Dispatch events
-        middleware.dispatchAllEvents();
-        System.out.println("   - Events dispatched after reconnection");
-        
-        System.out.println("\n2. Testing consumer disconnection/reconnection");
-        
-        // Disconnect consumer
-        consumers.get(consumerName).simulateDisconnection();
-        System.out.println("   - Consumer disconnected: " + consumerName);
-        
-        // Publish events (consumer won't receive)
-        publishers.get(publisherName).publish(channelName, new BasicEvent("Event during consumer disconnect"));
-        middleware.dispatchAllEvents();
-        System.out.println("   - Published and dispatched event while consumer disconnected");
-        
-        // Reconnect consumer
-        consumers.get(consumerName).simulateReconnection();
-        System.out.println("   - Consumer reconnected: " + consumerName);
-        
-        // Publish events after reconnection
-        publishers.get(publisherName).publish(channelName, new BasicEvent("Event after consumer reconnect"));
-        middleware.dispatchAllEvents();
-        System.out.println("   - Published and dispatched event after consumer reconnection");
-        
-        System.out.println("\nR4 Test Complete");
-        System.out.println("Press Enter to continue...");
-        scanner.nextLine();
-    }
-    
-    private void runR5Test() {
-        System.out.println("\n=== Running R5 Test: Crashing Queues ===");
-        
-        // Ensure we have necessary components
-        List<String> channels = middleware.listChannels();
-        if (channels.isEmpty() || publishers.isEmpty()) {
-            System.out.println("Test requires at least one channel and publisher.");
-            return;
-        }
-        
-        // Choose channels for test
-        String testChannel1 = channels.get(0);
-        String testChannel2 = channels.size() > 1 ? channels.get(1) : testChannel1;
-        String publisherName = publishers.keySet().iterator().next();
-        
-        // Set up channels with different recovery settings
-        middleware.setChannelAutomaticRecovery(testChannel1, true);
-        middleware.setChannelAutomaticRecovery(testChannel2, false);
-        System.out.println("Set channel recovery: " + testChannel1 + " (automatic), " + 
-                         testChannel2 + " (manual)");
-        
-        System.out.println("\n1. Testing auto-recovery channel");
-        middleware.simulateChannelQueueCrash(testChannel1);
-        System.out.println("   - Crashed channel: " + testChannel1);
-        
-        // Try to publish to crashed channel (should auto-recover)
-        boolean success = true;
-        try {
-            publishers.get(publisherName).publish(testChannel1, new BasicEvent("Post-crash Event - Auto-recovery"));
-        } catch (Exception e) {
-            success = false;
-            System.out.println("   - Error publishing to auto-recovery channel: " + e.getMessage());
-        }
-        
-        if (success) {
-            System.out.println("   - Successfully published to auto-recovery channel (recovered)");
-        }
-        
-        System.out.println("\n2. Testing manual recovery channel");
-        middleware.simulateChannelQueueCrash(testChannel2);
-        System.out.println("   - Crashed channel: " + testChannel2);
-        
-        // Try to publish to crashed channel (should fail)
-        try {
-            publishers.get(publisherName).publish(testChannel2, new BasicEvent("Post-crash Event - Manual recovery"));
-            System.out.println("   - Published to crashed manual-recovery channel (unexpected)");
-        } catch (Exception e) {
-            System.out.println("   - Failed to publish to crashed manual-recovery channel (expected): " + e.getMessage());
-        }
-        
-        // Manually recover channel
-        boolean recovered = middleware.recoverChannelQueue(testChannel2);
-        System.out.println("   - Manual channel recovery " + (recovered ? "succeeded" : "failed"));
-        
-        // Try to publish after manual recovery
-        success = true;
-        try {
-            publishers.get(publisherName).publish(testChannel2, new BasicEvent("Post-recovery Event - Manual recovery"));
-        } catch (Exception e) {
-            success = false;
-            System.out.println("   - Error publishing after manual recovery: " + e.getMessage());
-        }
-        
-        if (success) {
-            System.out.println("   - Successfully published after manual recovery");
-        }
-        
-        System.out.println("\nR5 Test Complete");
-        System.out.println("Press Enter to continue...");
-        scanner.nextLine();
-    }
-    
-    private void runR6Test() {
-        System.out.println("\n=== Running R6 Test: Crashing Consumers ===");
-        
-        // Ensure we have necessary components
-        List<String> channels = middleware.listChannels();
-        if (channels.isEmpty() || consumers.isEmpty() || publishers.isEmpty()) {
-            System.out.println("Test requires at least one channel, consumer, and publisher.");
-            return;
-        }
-        
-        String testChannel = channels.get(0);
-        String consumerName = consumers.keySet().iterator().next();
-        String publisherName = publishers.keySet().iterator().next();
-        
-        // Ensure consumer is subscribed
-        consumers.get(consumerName).subscribe(testChannel);
-        System.out.println("Ensured " + consumerName + " is subscribed to " + testChannel);
-        
-        // Simulate consumer crash
-        consumers.get(consumerName).simulateCrash();
-        System.out.println("Crashed consumer: " + consumerName);
-        
-        // Try to use crashed consumer
-        try {
-            consumers.get(consumerName).consume(new BasicEvent("Test event for crashed consumer"));
-            System.out.println("Used crashed consumer (unexpected)");
-        } catch (Exception e) {
-            System.out.println("Failed to use crashed consumer (expected): " + e.getMessage());
-        }
-        
-        // Publish events (should not be received by crashed consumer)
-        publishers.get(publisherName).publish(testChannel, new BasicEvent("Event during consumer crash"));
-        middleware.dispatchAllEvents();
-        System.out.println("Published and dispatched event while consumer crashed");
-        
-        // Wait a moment for health monitor to detect crash
-        System.out.println("Waiting for health monitor to detect crash...");
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-        
-        // Recover consumer
-        consumers.get(consumerName).recover();
-        System.out.println("Recovered consumer: " + consumerName);
-        
-        // Publish event to verify recovery
-        publishers.get(publisherName).publish(testChannel, new BasicEvent("Post-recovery Event"));
-        middleware.dispatchAllEvents();
-        System.out.println("Published and dispatched event after consumer recovery");
-        
-        System.out.println("\nR6 Test Complete");
-        System.out.println("Press Enter to continue...");
-        scanner.nextLine();
-    }
-    
-    private void runR7Test() {
-        System.out.println("\n=== Running R7 Test: Network Delays ===");
-        
-        // Ensure we have necessary components
-        List<String> channels = middleware.listChannels();
-        if (channels.isEmpty() || publishers.isEmpty() || consumers.isEmpty()) {
-            System.out.println("Test requires at least one channel, publisher, and consumer.");
-            return;
-        }
-        
-        String testChannel1 = channels.get(0);
-        String testChannel2 = channels.size() > 1 ? channels.get(1) : testChannel1;
-        String publisherName = publishers.keySet().iterator().next();
-        String consumerName = consumers.keySet().iterator().next();
-        
-        // Ensure consumer is subscribed
-        consumers.get(consumerName).subscribe(testChannel1);
-        consumers.get(consumerName).subscribe(testChannel2);
-        
-        // Configure different delay settings
-        middleware.simulateChannelNetworkDelay(testChannel1, 200);
-        System.out.println("Set fixed delay of 200ms for " + testChannel1);
-        
-        middleware.simulateChannelVariableNetworkDelay(testChannel2, 300, 800);
-        System.out.println("Set variable delay of 300-800ms for " + testChannel2);
-        
-        // Publish messages to test delays
-        for (int i = 0; i < 3; i++) {
-            publishers.get(publisherName).publish(testChannel1, new BasicEvent("Fixed Delay Event " + i));
-            publishers.get(publisherName).publish(testChannel2, new BasicEvent("Variable Delay Event " + i));
-        }
-        System.out.println("Published test events to delayed channels");
-        
-        // Dispatch events
-        middleware.dispatchAllEvents();
-        System.out.println("Dispatched events (delivery will be delayed)");
-        
-        // Wait for delayed delivery
-        System.out.println("Waiting for delayed delivery to complete...");
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-        
-        // Show results
-        System.out.println("\nChecking delivery after delays...");
-        Map<String, BasicMiddleware.DeliveryStats> stats = middleware.getDeliveryStats();
-        
-        for (Map.Entry<String, BasicMiddleware.DeliveryStats> entry : stats.entrySet()) {
-            if (entry.getKey().equals(testChannel1) || entry.getKey().equals(testChannel2)) {
-                System.out.println(entry.getKey() + " stats: " + entry.getValue());
-            }
-        }
-        
-        System.out.println("\nR7 Test Complete");
-        System.out.println("Press Enter to continue...");
-        scanner.nextLine();
-    }
-    
-    private void runR8Test() {
-        System.out.println("\n=== Running R8 Test: Dropped Messages ===");
-        
-        // Ensure we have necessary components
-        List<String> channels = middleware.listChannels();
-        if (channels.isEmpty() || publishers.isEmpty() || consumers.isEmpty()) {
-            System.out.println("Test requires at least one channel, publisher, and consumer.");
-            return;
-        }
-        
-        String testChannel = channels.get(0);
-        String consumerName = consumers.keySet().iterator().next();
-        String publisherName = publishers.keySet().iterator().next();
-        
-        // Ensure consumer is subscribed
-        consumers.get(consumerName).subscribe(testChannel);
-        
-        // Configure message loss simulation
-        middleware.setChannelDeliveryFailureProbability(testChannel, 0.3);  // 30% channel loss
-        System.out.println("Set 30% message loss for channel: " + testChannel);
-        
-        consumers.get(consumerName).simulateMessageLoss(true, 0.2);  // 20% consumer loss
-        System.out.println("Set 20% message loss for consumer: " + consumerName);
-        
-        // Publish messages with loss simulation
-        System.out.println("Publishing with message loss simulation...");
-        for (int i = 0; i < 10; i++) {
-            publishers.get(publisherName).publish(testChannel, new BasicEvent("Loss Test Event " + i));
-        }
-        System.out.println("Published 10 test events");
-        
-        // Dispatch events
-        middleware.dispatchAllEvents();
-        System.out.println("Dispatched events (some will be lost/retried)");
-        
-        // Wait for retries
-        System.out.println("Waiting for retry attempts...");
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-        
-        // Show results
-        System.out.println("\nChecking delivery after retries...");
-        Map<String, BasicMiddleware.DeliveryStats> stats = middleware.getDeliveryStats();
-        
-        if (stats.containsKey(testChannel)) {
-            System.out.println(testChannel + " stats: " + stats.get(testChannel));
-        }
-        
-        System.out.println("\nR8 Test Complete");
-        System.out.println("Press Enter to continue...");
-        scanner.nextLine();
-    }
-    
-    private void runIntegratedTest() {
-        System.out.println("\n=== Starting Integrated QoS Test ===");
-        
-        // Create test components if needed
-        ensureTestComponentsExist();
-        
-        // Configure channels with different QoS settings
-        configureTestChannels();
-        
-        // Phase 1: Initial publishing
-        System.out.println("\n--- Phase 1: Initial Publishing ---");
-        
-        publishers.get("main-publisher").publish("reliable-channel", new BasicEvent("Reliable Message 1"));
-        publishers.get("main-publisher").publish("delay-tolerant-channel", new BasicEvent("Delay-Tolerant Message 1"));
-        publishers.get("main-publisher").publish("critical-channel", new BasicEvent("Critical Message 1"));
-        
-        middleware.dispatchAllEvents();
-        System.out.println("Initial events dispatched");
-        
-        // Phase 2: Simulate failures
-        System.out.println("\n--- Phase 2: Simulating Failures ---");
-        
-        // Simulate publisher disconnection
-        publishers.get("main-publisher").simulateDisconnection();
-        System.out.println("Disconnected main publisher");
-        
-        // Try to publish with disconnected publisher (will buffer)
-        publishers.get("main-publisher").publish("reliable-channel", new BasicEvent("Buffered Message"));
-        publishers.get("main-publisher").publish("critical-channel", new BasicEvent("Buffered Critical Message"));
-        System.out.println("Published messages with disconnected publisher (buffered)");
-        
-        // Use backup publisher
-        publishers.get("backup-publisher").publish("delay-tolerant-channel", new BasicEvent("Backup Publisher Message"));
-        System.out.println("Published message with backup publisher");
-        
-        // Simulate consumer crash
-        consumers.get("reliable-consumer").simulateCrash();
-        System.out.println("Crashed reliable consumer");
-        
-        // Simulate channel queue crash
-        middleware.simulateChannelQueueCrash("reliable-channel");
-        System.out.println("Crashed reliable channel queue");
-        
-        // Dispatch events
-        middleware.dispatchAllEvents();
-        System.out.println("Dispatched events during failures");
-        
-        // Wait a moment
-        System.out.println("Waiting for failures to be detected...");
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-        
-        // Phase 3: Recovery
-        System.out.println("\n--- Phase 3: Recovery ---");
-        
-        // Reconnect publisher
-        publishers.get("main-publisher").simulateReconnection();
-        System.out.println("Reconnected main publisher");
-        
-        // Manually recover channel
-        middleware.recoverChannelQueue("reliable-channel");
-        System.out.println("Recovered reliable channel queue");
-        
-        // Recover consumer
-        consumers.get("reliable-consumer").recover();
-        System.out.println("Recovered reliable consumer");
-        
-        // Publish after recovery
-        publishers.get("main-publisher").publish("reliable-channel", new BasicEvent("Post-recovery Message"));
-        System.out.println("Published message after recovery");
-        
-        // Dispatch events
-        middleware.dispatchAllEvents();
-        System.out.println("Dispatched events after recovery");
-        
-        // Wait for processing
-        System.out.println("Waiting for processing to complete...");
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-        
-        // Show final statistics
-        System.out.println("\n--- Final Statistics ---");
-        Map<String, BasicMiddleware.DeliveryStats> stats = middleware.getDeliveryStats();
-        
-        for (Map.Entry<String, BasicMiddleware.DeliveryStats> entry : stats.entrySet()) {
-            System.out.println(entry.getKey() + ": " + entry.getValue());
-        }
-        
-        System.out.println("\nIntegrated QoS Test Complete");
-        System.out.println("Press Enter to continue...");
-        scanner.nextLine();
-    }
-    
-    private void ensureTestComponentsExist() {
-        // Create test channels if needed
-        if (!middleware.listChannels().contains("reliable-channel")) {
-            middleware.createChannel("reliable-channel");
-        }
-        if (!middleware.listChannels().contains("delay-tolerant-channel")) {
-            middleware.createChannel("delay-tolerant-channel");
-        }
-        if (!middleware.listChannels().contains("critical-channel")) {
-            middleware.createChannel("critical-channel");
-        }
-        
-        // Create test publishers if needed
-        if (!publishers.containsKey("main-publisher")) {
-            BasicPublisher publisher = new BasicPublisher("main-publisher");
-            publisher.registerWithMiddleware(middleware);
-            publishers.put("main-publisher", publisher);
-        }
-        if (!publishers.containsKey("backup-publisher")) {
-            BasicPublisher publisher = new BasicPublisher("backup-publisher");
-            publisher.registerWithMiddleware(middleware);
-            publishers.put("backup-publisher", publisher);
-        }
-        
-        // Create test consumers if needed
-        if (!consumers.containsKey("reliable-consumer")) {
-            BasicConsumer consumer = new BasicConsumer("reliable-consumer");
-            consumer.registerWithMiddleware(middleware);
-            consumer.subscribe("reliable-channel");
-            consumers.put("reliable-consumer", consumer);
-        }
-        if (!consumers.containsKey("delay-tolerant-consumer")) {
-            BasicConsumer consumer = new BasicConsumer("delay-tolerant-consumer");
-            consumer.registerWithMiddleware(middleware);
-            consumer.subscribe("delay-tolerant-channel");
-            consumers.put("delay-tolerant-consumer", consumer);
-        }
-        if (!consumers.containsKey("critical-consumer")) {
-            BasicConsumer consumer = new BasicConsumer("critical-consumer");
-            consumer.registerWithMiddleware(middleware);
-            consumer.subscribe("critical-channel");
-            consumer.subscribe("reliable-channel");
-            consumers.put("critical-consumer", consumer);
-        }
-        
-        System.out.println("Test components created/verified");
-    }
-    
-    private void configureTestChannels() {
-        // Set recovery settings
-        middleware.setChannelAutomaticRecovery("reliable-channel", false);
-        middleware.setChannelAutomaticRecovery("delay-tolerant-channel", false);
-        middleware.setChannelAutomaticRecovery("critical-channel", true);
-        
-        // Configure network conditions
-        middleware.simulateChannelNetworkDelay("reliable-channel", 100);
-        middleware.setChannelDeliveryFailureProbability("reliable-channel", 0.1);
-        
-        middleware.simulateChannelVariableNetworkDelay("delay-tolerant-channel", 500, 2000);
-        middleware.setChannelDeliveryFailureProbability("delay-tolerant-channel", 0.2);
-        
-        middleware.simulateChannelNetworkJitter("critical-channel", 1000, 500);
-        middleware.setChannelDeliveryFailureProbability("critical-channel", 0.3);
-        
-        // Configure consumer message loss
-        consumers.get("delay-tolerant-consumer").simulateMessageLoss(true, 0.1);
-        
-        System.out.println("Channels configured with different QoS settings");
     }
     
     private void createTestComponents() {

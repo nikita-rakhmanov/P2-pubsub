@@ -1,28 +1,28 @@
+Writing test results to test_results.txt...
 ===== Starting Comprehensive Pub/Sub Test Suite =====
-Test run started at: Tue Apr 15 19:53:12 BST 2025
+Test run started at: Wed Apr 16 15:17:16 BST 2025
 
 --- Testing R1: Basic Publish/Subscribe ---
 Publisher Pub1 registered with middleware
 Consumer Sub1 registered with middleware
 Consumer Sub2 registered with middleware
-Queue backups will be stored in: /var/folders/5x/3z0k7rh948j0zl95tgvfb9gc0000gn/T//pubsub-backups
 Consumer Sub1 subscribed to channel test-channel-1
 Consumer Sub2 subscribed to channel test-channel-1
 Publisher Pub1 published event Event 1 to channel test-channel-1
 Publisher Pub1 published event Event 2 to channel test-channel-1
-Consumer Sub1 received event: Event 1 at 1744743192549
-TestConsumer Sub1 successfully processed event: Event 1 (ID: 80bc8b68-f8cd-401e-bec7-db0d883c9d7d)
-Consumer Sub2 received event: Event 1 at 1744743192549
-TestConsumer Sub2 successfully processed event: Event 1 (ID: 80bc8b68-f8cd-401e-bec7-db0d883c9d7d)
-Consumer Sub1 received event: Event 2 at 1744743192583
-TestConsumer Sub1 successfully processed event: Event 2 (ID: 3e3b3dd8-8fc1-4c65-ab08-0423ad78dee4)
-Consumer Sub2 received event: Event 2 at 1744743192583
-TestConsumer Sub2 successfully processed event: Event 2 (ID: 3e3b3dd8-8fc1-4c65-ab08-0423ad78dee4)
+Consumer Sub2 received event: Event 1 at 1744813036570
+TestConsumer Sub2 successfully processed event: Event 1 (ID: 73bda819-a1a0-4c45-8e22-7d673487cafc)
+Consumer Sub1 received event: Event 1 at 1744813036570
+TestConsumer Sub1 successfully processed event: Event 1 (ID: 73bda819-a1a0-4c45-8e22-7d673487cafc)
+Consumer Sub2 received event: Event 2 at 1744813036570
+TestConsumer Sub2 successfully processed event: Event 2 (ID: 6efad397-2a45-480d-9edf-018d971a9d4c)
+Consumer Sub1 received event: Event 2 at 1744813036570
+TestConsumer Sub1 successfully processed event: Event 2 (ID: 6efad397-2a45-480d-9edf-018d971a9d4c)
 Basic Pub/Sub: OK
 Consumer Sub1 unsubscribed from channel test-channel-1
 Publisher Pub1 published event Event 3 to channel test-channel-1
-Consumer Sub2 received event: Event 3 at 1744743193094
-TestConsumer Sub2 successfully processed event: Event 3 (ID: f3b55d84-c887-4c81-b752-dcf2287b5d38)
+Consumer Sub2 received event: Event 3 at 1744813037073
+TestConsumer Sub2 successfully processed event: Event 3 (ID: 91323755-869a-4f15-b821-f11fddae81f5)
 Unsubscribe: OK
 Cleaning up test resources...
 
@@ -35,20 +35,21 @@ Publisher PubR4 registered with middleware
 Consumer SubR4 registered with middleware
 Consumer SubR4 subscribed to channel test-channel-1
 Publisher PubR4 published event Event P1 to channel test-channel-1
-Consumer SubR4 received event: Event P1 at 1744743193801
-TestConsumer SubR4 successfully processed event: Event P1 (ID: 59576d3b-9460-4507-869b-79fa95a6e347)
+Consumer SubR4 received event: Event P1 at 1744813037781
+TestConsumer SubR4 successfully processed event: Event P1 (ID: 507da14e-6dd4-4c42-aacc-d94c18c00f4b)
 Simulating publisher disconnection...
 Component PubR4 disconnected!
 Publisher PubR4 buffered message for channel test-channel-1
 Publisher PubR4 buffered message for channel test-channel-1
-Simulating publisher reconnection...
 Component PubR4 reconnected!
 Publisher PubR4 successfully published buffered message to test-channel-1
 Publisher PubR4 successfully published buffered message to test-channel-1
-Consumer SubR4 received event: Event P2 (Buffered) at 1744743194306
-TestConsumer SubR4 successfully processed event: Event P2 (Buffered) (ID: 58cddb8f-e72a-4b22-b5fd-00190c1d9c62)
-Consumer SubR4 received event: Event P3 (Buffered) at 1744743194308
-TestConsumer SubR4 successfully processed event: Event P3 (Buffered) (ID: 27cd2406-2bd4-4e7b-afea-5907d20db0f4)
+Simulating publisher reconnection...
+Component PubR4 reconnected!
+Consumer SubR4 received event: Event P2 (Buffered) at 1744813038283
+TestConsumer SubR4 successfully processed event: Event P2 (Buffered) (ID: 1f8dfe2e-2288-42a3-95ea-202839047bac)
+Consumer SubR4 received event: Event P3 (Buffered) at 1744813038283
+TestConsumer SubR4 successfully processed event: Event P3 (Buffered) (ID: 4a330f4e-8d20-4fbe-af7c-7804e15fbd6d)
 Publisher Connection Interruption: OK
 Cleaning up test resources...
 
@@ -57,20 +58,22 @@ Publisher PubR4C registered with middleware
 Consumer SubR4C registered with middleware
 Consumer SubR4C subscribed to channel test-channel-1
 Publisher PubR4C published event Event C1 to channel test-channel-1
-Consumer SubR4C received event: Event C1 at 1744743197419
-TestConsumer SubR4C successfully processed event: Event C1 (ID: 09f90bd8-a865-4e28-8231-692622cccfe9)
+Consumer SubR4C received event: Event C1 at 1744813041398
+TestConsumer SubR4C successfully processed event: Event C1 (ID: d2f3946e-6aea-4343-a934-3d69faf83901)
 Simulating consumer disconnection...
 Component SubR4C disconnected!
 Publisher PubR4C published event Event C2 (During Disconnect) to channel test-channel-1
 Consumer SubR4C is disconnected, cannot consume event
+Component SubR4C reconnected!
+Consumer SubR4C resubscribed to test-channel-1
 Simulating consumer reconnection...
 Component SubR4C reconnected!
 Consumer SubR4C resubscribed to test-channel-1
 Publisher PubR4C published event Event C3 (After Reconnect) to channel test-channel-1
-Consumer SubR4C received event: Event C2 (During Disconnect) at 1744743197924
-TestConsumer SubR4C successfully processed event: Event C2 (During Disconnect) (ID: 98c9696e-79e0-4d17-bfe1-6c0ba2a3f62f)
-Consumer SubR4C received event: Event C3 (After Reconnect) at 1744743198428
-TestConsumer SubR4C successfully processed event: Event C3 (After Reconnect) (ID: 16363a31-31e1-41e2-b657-703f30cb0e4d)
+Consumer SubR4C received event: Event C2 (During Disconnect) at 1744813041903
+TestConsumer SubR4C successfully processed event: Event C2 (During Disconnect) (ID: 0498c52a-d979-4dcc-8f6f-e7cb2f403d80)
+Consumer SubR4C received event: Event C3 (After Reconnect) at 1744813042407
+TestConsumer SubR4C successfully processed event: Event C3 (After Reconnect) (ID: 59f5411d-ec2d-470a-aa40-a7bb470f08ca)
 Consumer Connection Interruption: OK (Received 3 events)
 Cleaning up test resources...
 
@@ -93,8 +96,8 @@ Channel test-channel-1 attempting to recover event queue...
 Recovering queue channel-test-channel-1...
 Queue channel-test-channel-1 recovered with 1 items
 Channel test-channel-1 successfully recovered event queue
-Consumer SubR5 received event: Event Q1 (Before Crash) at 1744743199041
-TestConsumer SubR5 successfully processed event: Event Q1 (Before Crash) (ID: f90ed61e-25ff-4f48-8444-9fe4d8e38a3a)
+Consumer SubR5 received event: Event Q1 (Before Crash) at 1744813043015
+TestConsumer SubR5 successfully processed event: Event Q1 (Before Crash) (ID: 872a400e-501f-4e84-bad8-f38f61d86e0e)
 Publisher PubR5 buffered message for channel test-channel-1
 Simulating crash for channel test-channel-1's event queue
 Queue channel-test-channel-1 has crashed!
@@ -104,8 +107,8 @@ Channel test-channel-1 attempting to recover event queue...
 Recovering queue channel-test-channel-1...
 Queue channel-test-channel-1 recovered with 1 items
 Channel test-channel-1 successfully recovered event queue
-Consumer SubR5 received event: Event Q1 (Before Crash) at 1744743199041
-TestConsumer SubR5 successfully processed event: Event Q1 (Before Crash) (ID: f90ed61e-25ff-4f48-8444-9fe4d8e38a3a)
+Consumer SubR5 received event: Event Q1 (Before Crash) at 1744813043015
+TestConsumer SubR5 successfully processed event: Event Q1 (Before Crash) (ID: 872a400e-501f-4e84-bad8-f38f61d86e0e)
 Queue Crash Recovery: OK (Received 2 events)
 Cleaning up test resources...
 
@@ -123,9 +126,9 @@ Consumer Consumer2 subscribed to channel important-updates
 --- Initial publishing ---
 Publisher MainPublisher published event Important Update 1 to channel important-updates
 Publisher MainPublisher published event Status Report 1 to channel status-reports
-Consumer Consumer2 received event: Important Update 1 at 1744743200193
-Consumer Consumer1 received event: Important Update 1 at 1744743200193
-Consumer Consumer1 received event: Status Report 1 at 1744743200193
+Consumer Consumer1 received event: Important Update 1 at 1744813044138
+Consumer Consumer2 received event: Important Update 1 at 1744813044138
+Consumer Consumer1 received event: Status Report 1 at 1744813044138
 
 --- Simulating consumer crash ---
 Simulating crash for consumer Consumer1
@@ -140,22 +143,18 @@ Consumer status: HEALTHY
 Consumer status: HEALTHY
 Consumer status: HEALTHY
 Consumer status: HEALTHY
-Consumer Consumer1 suspected dead (no heartbeat for 7.336 seconds)
-Consumer status: SUSPECTED_DEAD
-Consumer status: SUSPECTED_DEAD
+Consumer status: HEALTHY
+Consumer status: HEALTHY
 
 --- Publishing while consumer is crashed ---
 Publisher MainPublisher published event Important Update 2 to channel important-updates
 Publisher MainPublisher published event Status Report 2 to channel status-reports
-Consumer Consumer2 received event: Important Update 2 at 1744743210222
 Error in message delivery: Consumer Consumer1 has crashed and not yet recovered
+Consumer Consumer2 received event: Important Update 2 at 1744813054168
 Error in message delivery: Consumer Consumer1 has crashed and not yet recovered
 
 --- Recovering consumer ---
 Recovering consumer Consumer1
-Consumer Consumer1 has recovered, restoring subscriptions...
-Consumer Consumer1 resubscribed to important-updates
-Consumer Consumer1 resubscribed to status-reports
 Consumer Consumer1 resubscribed to important-updates
 Consumer Consumer1 resubscribed to status-reports
 
@@ -166,11 +165,11 @@ Consumer1 in status-reports subscribers: true
 --- Publishing after recovery ---
 Publisher MainPublisher published event Important Update 3 to channel important-updates
 Publisher MainPublisher published event Status Report 3 to channel status-reports
-Consumer Consumer1 received event: Important Update 2 at 1744743210222
-Consumer Consumer2 received event: Important Update 3 at 1744743212230
-Consumer Consumer1 received event: Important Update 3 at 1744743212230
-Consumer Consumer1 received event: Status Report 2 at 1744743210222
-Consumer Consumer1 received event: Status Report 3 at 1744743212230
+Consumer Consumer1 received event: Important Update 2 at 1744813054168
+Consumer Consumer1 received event: Important Update 3 at 1744813056171
+Consumer Consumer2 received event: Important Update 3 at 1744813056171
+Consumer Consumer1 received event: Status Report 2 at 1744813054168
+Consumer Consumer1 received event: Status Report 3 at 1744813056171
 
 Cleaning up...
 Consumer Crash Test Complete!
@@ -183,9 +182,9 @@ Consumer SubR7 registered with middleware
 Consumer SubR7 subscribed to channel test-channel-1
 Simulating network delay: 1000ms
 Publisher PubR7 published event Event D1 (Delayed) to channel test-channel-1
-Consumer SubR7 received event: Event D1 (Delayed) at 1744743212234
-TestConsumer SubR7 successfully processed event: Event D1 (Delayed) (ID: b7148393-6e4f-4141-93a5-f506cb6806cb)
-Network Delay: OK (Delivery took ~1033ms)
+Consumer SubR7 received event: Event D1 (Delayed) at 1744813056173
+TestConsumer SubR7 successfully processed event: Event D1 (Delayed) (ID: 83daac57-9973-44b9-a9e6-81256973cbe6)
+Network Delay: OK (Delivery took ~1031ms)
 Cleaning up test resources...
 
 --- Testing R7: Event Expiration due to Delay/TTL ---
@@ -194,8 +193,8 @@ Consumer SubR7Exp registered with middleware
 Consumer SubR7Exp subscribed to channel test-channel-1
 Simulating network delay (1000ms) longer than TTL (500ms)
 Publisher PubR7Exp published event Event E1 (Should Expire) to channel test-channel-1
-Message expired during network delay: TimestampedMessage{messageId='d05dcd58-c996-4ba8-94de-cf9f69c145c5', event=BasicEvent{id='912f0a58-1c50-49a9-b304-1bd2a4132f69', type='Event E1 (Should Expire)', timestamp=1744743213391, status=DISPATCHED, age=1004ms, acks=0/1, retries=1}, channelName='test-channel-1', status=DISPATCHED, age=1019ms, retryCount=0}
-Event delivery failed after 2 retries: BasicEvent{id='912f0a58-1c50-49a9-b304-1bd2a4132f69', type='Event E1 (Should Expire)', timestamp=1744743213391, status=FAILED, age=1506ms, acks=0/1, retries=2}
+Message expired during network delay: TimestampedMessage{messageId='7c5e8b0b-386d-43ce-b180-dce997cbc9af', event=BasicEvent{id='fa3a6508-503c-47dc-a295-a83e86c37c87', type='Event E1 (Should Expire)', timestamp=1744813057306, status=DISPATCHED, age=1003ms, acks=0/1, retries=1}, channelName='test-channel-1', status=DISPATCHED, age=1003ms, retryCount=0}
+Event delivery failed after 2 retries: BasicEvent{id='fa3a6508-503c-47dc-a295-a83e86c37c87', type='Event E1 (Should Expire)', timestamp=1744813057306, status=FAILED, age=1503ms, acks=0/1, retries=2}
 Event Expiration: OK (Message likely expired/failed as expected)
 Stats: Sent: 2, Acked: 0, Resent: 1, Failed: 1, Pending: 0, Success: 0.00%
 Cleaning up test resources...
@@ -207,16 +206,16 @@ Consumer SubR8B registered with middleware
 Consumer SubR8A subscribed to channel test-channel-1
 Consumer SubR8B subscribed to channel test-channel-1
 Publisher PubR8 published event Event R1 (Ack Test) to channel test-channel-1
-Consumer SubR8A received event: Event R1 (Ack Test) at 1744743215528
-Consumer SubR8B received event: Event R1 (Ack Test) at 1744743215528
-Message expired during network delay: TimestampedMessage{messageId='494148de-e1bc-41ae-a409-44acc10a5b4b', event=BasicEvent{id='912f0a58-1c50-49a9-b304-1bd2a4132f69', type='Event E1 (Should Expire)', timestamp=1744743213391, status=FAILED, age=2510ms, acks=0/1, retries=2}, channelName='test-channel-1', status=DISPATCHED, age=1004ms, retryCount=1}
+Consumer SubR8B received event: Event R1 (Ack Test) at 1744813059416
+Consumer SubR8A received event: Event R1 (Ack Test) at 1744813059416
+Message expired during network delay: TimestampedMessage{messageId='6c75d529-6e8d-4f96-b882-21427d7fd400', event=BasicEvent{id='fa3a6508-503c-47dc-a295-a83e86c37c87', type='Event E1 (Should Expire)', timestamp=1744813057306, status=FAILED, age=2503ms, acks=0/1, retries=2}, channelName='test-channel-1', status=DISPATCHED, age=1000ms, retryCount=1}
 Acknowledgement: OK
 Simulating delivery failure (100% loss) for retries...
 Publisher PubR8 published event Event R2 (Retry Test) to channel test-channel-1
 Dispatch 1, Event Status: DISPATCHED, Retries: 1
 Dispatch 2, Event Status: DISPATCHED, Retries: 2
 Dispatch 3, Event Status: DISPATCHED, Retries: 3
-Event delivery failed after 4 retries: BasicEvent{id='bdd4a96a-dc80-4c99-bdb3-4ad5d5e4e019', type='Event R2 (Retry Test)', timestamp=1744743216031, status=FAILED, age=315ms, acks=0/2, retries=4}
+Event delivery failed after 4 retries: BasicEvent{id='7a77ffbc-29d1-4f1f-b1b4-de01765a8556', type='Event R2 (Retry Test)', timestamp=1744813059920, status=FAILED, age=306ms, acks=0/2, retries=4}
 Dispatch 4, Event Status: FAILED, Retries: 4
 Retry Mechanism: OK
 Stats: Sent: 5, Acked: 1, Resent: 3, Failed: 1, Pending: 0, Success: 50.00%
@@ -234,37 +233,37 @@ Publisher PubR8L published event Event L1 to channel test-channel-1
 Publisher PubR8L published event Event L2 to channel test-channel-1
 Publisher PubR8L published event Event L3 to channel test-channel-1
 Publisher PubR8L published event Event L4 to channel test-channel-1
-Consumer SubR8L2 received event: Event L0 at 1744743216559
-TestConsumer SubR8L2 successfully processed event: Event L0 (ID: 70344f77-1980-408a-a2dd-4f8523997272)
 Consumer SubR8L1 simulating message loss for Event L0
-Consumer SubR8L2 received event: Event L1 at 1744743216559
-TestConsumer SubR8L2 successfully processed event: Event L1 (ID: be1d7db4-0dae-4c44-b700-4f39df215bd2)
+Consumer SubR8L2 received event: Event L0 at 1744813060435
+TestConsumer SubR8L2 successfully processed event: Event L0 (ID: 7600f623-e881-41f3-8160-cae787e59534)
 Consumer SubR8L1 simulating message loss for Event L1
-Consumer SubR8L2 received event: Event L2 at 1744743216559
-TestConsumer SubR8L2 successfully processed event: Event L2 (ID: 517a91a3-5273-4dff-b3ec-0afb1a3c16f3)
+Consumer SubR8L2 received event: Event L1 at 1744813060435
+TestConsumer SubR8L2 successfully processed event: Event L1 (ID: bf68648f-2a44-4a92-a85e-5cdf5795c361)
 Consumer SubR8L1 simulating message loss for Event L2
-Consumer SubR8L2 received event: Event L3 at 1744743216559
-TestConsumer SubR8L2 successfully processed event: Event L3 (ID: f410d75e-6c19-4060-b4be-df708912fd72)
+Consumer SubR8L2 received event: Event L2 at 1744813060435
+TestConsumer SubR8L2 successfully processed event: Event L2 (ID: c9ebf613-da0c-4977-9ad7-43c1b4459bf7)
 Consumer SubR8L1 simulating message loss for Event L3
-Consumer SubR8L2 received event: Event L4 at 1744743216559
-TestConsumer SubR8L2 successfully processed event: Event L4 (ID: ded480da-5995-4348-8346-1b957cda6b86)
+Consumer SubR8L2 received event: Event L3 at 1744813060435
+TestConsumer SubR8L2 successfully processed event: Event L3 (ID: 56a692c3-a71d-4ca9-808e-88dfebe2e300)
 Consumer SubR8L1 simulating message loss for Event L4
+Consumer SubR8L2 received event: Event L4 at 1744813060435
+TestConsumer SubR8L2 successfully processed event: Event L4 (ID: a2fb27bc-99a0-44a2-962f-b05f1fa45431)
 Simulated Message Loss: OK (C1 received 0, C2 received 5)
 Publisher PubR8L published event Event L_AfterLoss to channel test-channel-1
-Consumer SubR8L1 received event: Event L0 at 1744743216559
-TestConsumer SubR8L1 successfully processed event: Event L0 (ID: 70344f77-1980-408a-a2dd-4f8523997272)
-Consumer SubR8L1 received event: Event L1 at 1744743216559
-TestConsumer SubR8L1 successfully processed event: Event L1 (ID: be1d7db4-0dae-4c44-b700-4f39df215bd2)
-Consumer SubR8L1 received event: Event L2 at 1744743216559
-TestConsumer SubR8L1 successfully processed event: Event L2 (ID: 517a91a3-5273-4dff-b3ec-0afb1a3c16f3)
-Consumer SubR8L1 received event: Event L3 at 1744743216559
-TestConsumer SubR8L1 successfully processed event: Event L3 (ID: f410d75e-6c19-4060-b4be-df708912fd72)
-Consumer SubR8L1 received event: Event L4 at 1744743216559
-TestConsumer SubR8L1 successfully processed event: Event L4 (ID: ded480da-5995-4348-8346-1b957cda6b86)
-Consumer SubR8L2 received event: Event L_AfterLoss at 1744743217563
-TestConsumer SubR8L2 successfully processed event: Event L_AfterLoss (ID: 98b2668b-ee71-477d-bcae-a150841df369)
-Consumer SubR8L1 received event: Event L_AfterLoss at 1744743217563
-TestConsumer SubR8L1 successfully processed event: Event L_AfterLoss (ID: 98b2668b-ee71-477d-bcae-a150841df369)
+Consumer SubR8L1 received event: Event L0 at 1744813060435
+TestConsumer SubR8L1 successfully processed event: Event L0 (ID: 7600f623-e881-41f3-8160-cae787e59534)
+Consumer SubR8L1 received event: Event L1 at 1744813060435
+TestConsumer SubR8L1 successfully processed event: Event L1 (ID: bf68648f-2a44-4a92-a85e-5cdf5795c361)
+Consumer SubR8L1 received event: Event L2 at 1744813060435
+TestConsumer SubR8L1 successfully processed event: Event L2 (ID: c9ebf613-da0c-4977-9ad7-43c1b4459bf7)
+Consumer SubR8L1 received event: Event L3 at 1744813060435
+TestConsumer SubR8L1 successfully processed event: Event L3 (ID: 56a692c3-a71d-4ca9-808e-88dfebe2e300)
+Consumer SubR8L1 received event: Event L4 at 1744813060435
+TestConsumer SubR8L1 successfully processed event: Event L4 (ID: a2fb27bc-99a0-44a2-962f-b05f1fa45431)
+Consumer SubR8L1 received event: Event L_AfterLoss at 1744813061437
+TestConsumer SubR8L1 successfully processed event: Event L_AfterLoss (ID: 3b4d067c-61e6-4572-aabb-079fc7ea0166)
+Consumer SubR8L2 received event: Event L_AfterLoss at 1744813061437
+TestConsumer SubR8L2 successfully processed event: Event L_AfterLoss (ID: 3b4d067c-61e6-4572-aabb-079fc7ea0166)
 Cleaning up test resources...
 
 --- Testing Performance (Target: ~1000 msg/sec) ---
@@ -273,12 +272,12 @@ Running performance test with 10000 messages... (output suppressed)
 --- Performance Results ---
 Published: 10000 messages
 Received: 50000 messages
-Publish Duration: 0.085 seconds
-Dispatch/Consume Duration: 0.727 seconds
-Total Duration: 0.812 seconds
+Publish Duration: 0.029 seconds
+Dispatch/Consume Duration: 0.597 seconds
+Total Duration: 0.626 seconds
 Dispatch Cycles: 45
-Approx Publish Rate: 117822.17 msg/sec
-Overall Consume Rate: 61600.01 msg/sec
+Approx Publish Rate: 345846.65 msg/sec
+Overall Consume Rate: 79923.47 msg/sec
 Performance Test: PASSED (Rate >= 800 msg/sec)
 Cleaning up test resources...
 

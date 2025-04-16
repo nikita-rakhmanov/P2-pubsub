@@ -356,4 +356,5 @@ public class BasicConsumer implements Consumer, Serializable {
     public boolean isConnected() {
         return connectionManager.isConnected(id);
     }
+
 }
