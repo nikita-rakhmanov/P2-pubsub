@@ -10,7 +10,6 @@ import src.pubsub.core.Publisher;
 /**
  * Test class to demonstrate the queue crash recovery functionality.
  * Tests R5: Crashing queues.
- * Refactored to use BasicXXX implementation.
  */
 public class QueueCrashTest {
     public static void main(String[] args) throws InterruptedException {

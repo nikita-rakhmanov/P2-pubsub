@@ -11,7 +11,6 @@ import src.pubsub.core.Consumer;
 /**
  * Test class to demonstrate handling network delays.
  * Tests R7: Long delays in network traffic.
- * Refactored to use BasicXXX implementation.
  */
 public class NetworkDelayTest {
     public static void main(String[] args) throws InterruptedException {

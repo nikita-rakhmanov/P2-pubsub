@@ -12,7 +12,6 @@ import java.util.Map;
 /**
  * Test class to demonstrate handling message loss.
  * Tests R8: Dropped messages.
- * Refactored to use BasicXXX implementation.
  */
 public class MessageLossTest {
     public static void main(String[] args) throws InterruptedException {

@@ -134,7 +134,7 @@ public class NetworkSimulator {
                     }
                 }, scheduler);
                 
-                // We consider this a successful delivery even though it's delayed
+                // consider this a successful delivery even though it's delayed
                 return true;
             }
         } catch (Exception e) {

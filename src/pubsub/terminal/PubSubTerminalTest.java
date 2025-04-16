@@ -273,7 +273,6 @@ public class PubSubTerminalTest {
                         break;
                     case "7":
                         System.out.println("\nRunning MainTestSuite...");
-                        // First ask here about output so we don't get confused scanners
                         System.out.print("Output test results to: (1) Console or (2) File 'test_results.txt'? ");
                         String outputChoice = scanner.nextLine().trim();
                         boolean fileOutput = outputChoice.equals("2");
@@ -298,7 +297,7 @@ public class PubSubTerminalTest {
                 System.err.println("Error running test: " + e.getMessage());
                 e.printStackTrace();
             } finally {
-                // Always restore original output streams
+                // restore original output streams
                 System.setOut(originalOut);
                 System.setErr(originalErr);
                 

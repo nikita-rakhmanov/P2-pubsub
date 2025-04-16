@@ -167,7 +167,7 @@ public class PersistentQueue<T extends Serializable> {
         recovering.set(true);
         scheduler.shutdownNow(); // Shutdown old scheduler before creating new one
         try {
-             // Wait a tiny bit for shutdown
+             // Wait a bit for shutdown
              try {
                   scheduler.awaitTermination(100, TimeUnit.MILLISECONDS);
              } catch (InterruptedException e) {
@@ -175,9 +175,9 @@ public class PersistentQueue<T extends Serializable> {
              }
     
             System.out.println("Recovering queue " + queueId + "...");
-            this.queue = new DynamicQueue<>(10); // Assuming DynamicQueue constructor is safe
+            this.queue = new DynamicQueue<>(10);
     
-            List<T> recoveredItems = backupManager.recoverQueue(queueId); // Verify this manager works
+            List<T> recoveredItems = backupManager.recoverQueue(queueId); 
     
             if (recoveredItems != null) {
                  // Use the thread-safe add method
@@ -187,7 +187,7 @@ public class PersistentQueue<T extends Serializable> {
                  System.out.println("Queue " + queueId + " recovered with " + recoveredItems.size() + " items");
             } else {
                  System.err.println("Queue " + queueId + " recovery failed: BackupManager returned null.");
-                 // Decide how to handle this - maybe stay crashed
+                 // stay crashed
                  recovering.set(false); // Still need to unset recovering flag
                  return false;
             }
@@ -197,7 +197,7 @@ public class PersistentQueue<T extends Serializable> {
     
             // Create and start a new scheduler for the recovered queue
             this.scheduler = Executors.newScheduledThreadPool(1);
-            startBackupTask(); // Uses the new scheduler instance
+            startBackupTask(); 
     
             return true;
         } catch (Exception e) {
@@ -244,8 +244,8 @@ public class PersistentQueue<T extends Serializable> {
             return;
         }
     
-        // Get a thread-safe snapshot from the modified DynamicQueue
-        List<T> itemsToBackup = queue.getSnapshot(); // This is now thread-safe
+        // Get a thread-safe snapshot from the DynamicQueue 
+        List<T> itemsToBackup = queue.getSnapshot(); 
     
         if (itemsToBackup != null && !itemsToBackup.isEmpty()) {
             boolean success = backupManager.backupQueue(queueId, itemsToBackup);

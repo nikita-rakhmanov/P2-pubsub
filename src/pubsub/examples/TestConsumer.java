@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import src.pubsub.core.BasicConsumer;
 import src.pubsub.core.Event;
 
+// TestConsumer class that extends BasicConsumer, used for testing message consumption
 public class TestConsumer extends BasicConsumer {
     private final ConcurrentLinkedQueue<Event> receivedEvents = new ConcurrentLinkedQueue<>();
     private boolean consumedSuccessfully = false; // Flag to track success
@@ -26,17 +27,17 @@ public class TestConsumer extends BasicConsumer {
             consumptionSuccess = super.consume(event);
 
         } catch (Exception e) {
-            // Catch any unexpected exceptions from superclass (shouldn't happen if handled internally)
+            // Catch any unexpected exceptions from superclass 
             System.err.println("TestConsumer " + getId() + " caught unexpected exception calling super.consume: " + e.getMessage());
             consumptionSuccess = false; // Ensure failure on exception
         }
 
-        // Log and store event ONLY if super.consume returned true
+        // Log and store event only if super.consume returned true
         if (consumptionSuccess) {
             System.out.println("TestConsumer " + getId() + " successfully processed event: " + event.getType() + " (ID: " + ((src.pubsub.core.BasicEvent)event).getId() + ")");
             receivedEvents.add(event); // Store the event for verification
         } else {
-            // Optional: Log that TestConsumer did not store the event
+            // Log that TestConsumer did not store the event
             // System.out.println("TestConsumer " + getId() + " did not store event " + event.getType() + " because super.consume indicated failure/loss.");
         }
 

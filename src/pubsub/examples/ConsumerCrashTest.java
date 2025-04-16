@@ -11,7 +11,6 @@ import src.pubsub.qos.fault.ConsumerHealthMonitor;
 /**
  * Test class to demonstrate the consumer crash recovery functionality.
  * Tests R6: Crashing consumers.
- * Refactored to use BasicXXX implementation.
  */
 public class ConsumerCrashTest {
     public static void main(String[] args) throws InterruptedException {

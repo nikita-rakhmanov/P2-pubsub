@@ -8,7 +8,6 @@ import src.pubsub.core.BasicPublisher;
 /**
  * Test class to demonstrate the reconnection functionality.
  * Tests R4: Temporary interruptions of connections.
- * Refactored to use BasicXXX implementation.
  */
 public class ReconnectionTest {
     public static void main(String[] args) throws InterruptedException {
