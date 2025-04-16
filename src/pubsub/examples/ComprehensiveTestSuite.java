@@ -8,7 +8,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import src.pubsub.core.*; // Import all core classes
-import src.pubsub.qos.fault.ConsumerHealthMonitor;
 import java.io.FileOutputStream;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
@@ -308,7 +307,6 @@ public class ComprehensiveTestSuite {
 
         publisher.registerWithMiddleware(middleware);
         consumer.registerWithMiddleware(middleware);
-        BasicChannel channel = (BasicChannel) middleware.createChannel(TEST_CHANNEL_1);
         consumer.subscribe(TEST_CHANNEL_1);
 
         int delayMs = 1000; // 1 second delay
@@ -345,14 +343,12 @@ public class ComprehensiveTestSuite {
 
         publisher.registerWithMiddleware(middleware);
         consumer.registerWithMiddleware(middleware);
-        BasicChannel channel = (BasicChannel) middleware.createChannel(TEST_CHANNEL_1);
         consumer.subscribe(TEST_CHANNEL_1);
 
         System.out.println("Simulating network delay (" + delayMs + "ms) longer than TTL (" + ttlMs + "ms)");
         middleware.simulateChannelNetworkDelay(TEST_CHANNEL_1, delayMs);
 
         publisher.publish(TEST_CHANNEL_1, new BasicEvent("Event E1 (Should Expire)")); // Uses channel default TTL
-        long startTime = System.currentTimeMillis();
         middleware.dispatchAllEvents();
 
         // Wait for dispatch attempt AND expiration time
@@ -384,7 +380,6 @@ public class ComprehensiveTestSuite {
         publisher.registerWithMiddleware(middleware);
         consumer1.registerWithMiddleware(middleware);
         consumer2.registerWithMiddleware(middleware);
-        BasicChannel channel = (BasicChannel) middleware.createChannel(TEST_CHANNEL_1);
         consumer1.subscribe(TEST_CHANNEL_1);
         consumer2.subscribe(TEST_CHANNEL_1);
 
